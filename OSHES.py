@@ -6,6 +6,11 @@ import os
 import mysql.connector
 # Designing window for registration
  
+mydb = mysql.connector.connect(user='root', password='password',
+                              host='localhost',
+                              database='OSHES')
+
+mycursor = mydb.cursor();
 
 
 def registerCustomer():
