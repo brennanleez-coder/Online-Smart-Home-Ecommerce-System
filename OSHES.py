@@ -375,11 +375,11 @@ def main_account_screen():
     Label(text="").pack()
     Button(text="Customer Login", height="2", width="30", command = loginCustomer).pack()
     Label(text="").pack()
-    Button(text="Customer Register", height="2", width="30", command=register_customer).pack()
+    Button(text="Customer Register", height="2", width="30", command=registerCustomer).pack()
     Label(text="").pack()
     Button(text="Administrator Login", height="2", width="30", command = loginAdmin).pack()
     Label(text="").pack()
-    Button(text="Administrator Register", height="2", width="30", command=register_admin).pack()
+    Button(text="Administrator Register", height="2", width="30", command=registerAdministrator).pack()
  
     main_screen.mainloop()
  
