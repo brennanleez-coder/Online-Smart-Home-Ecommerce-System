@@ -1,6 +1,21 @@
 
 #import modules
- 
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="password"
+)
+
+mycursor = mydb.cursor()
+
+mycursor.execute("SHOW DATABASES")
+
+for x in mycursor:
+  print(x)
+
+
 from tkinter import *
 import os
 import mysql.connector
@@ -88,8 +103,8 @@ def registerCustomer():
     #populate database
     sql = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
     val = [customerID, fName, lName, gender, emailAddress, address, phoneNumber, password1]
-    mycursor.execute(sql, val)
-    mydb.commit()
+    #mycursor.execute(sql, val)
+    #mydb.commit()
 
 
     Label(register_screen, text="").pack()
@@ -162,7 +177,7 @@ def registerAdministrator():
     phoneNumber_entry = Entry(register_screen, textvariable=phoneNumber, show='*')
     phoneNumber_entry.pack()
 
-        #populate database
+    #populate database
     sql = "INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s) "
     val = [adminID, fName, lName, gender, emailAddress, address, phoneNumber, password2]
     mycursor.execute(sql, val)
@@ -193,12 +208,12 @@ def loginCustomer():
     global password1_login_entry
  
     Label(login_screen, text="customerID * ").pack()
-    adminID_login_entry = Entry(login_screen, textvariable=customerID_verify)
-    adminID_login_entry.pack()
+    customerID_login_entry = Entry(login_screen, textvariable=customerID_verify)
+    customerID_login_entry.pack()
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password1_verify, show= '*')
-    password_login_entry.pack()
+    password1_login_entry = Entry(login_screen, textvariable=password1_verify, show= '*')
+    password1_login_entry.pack()
     Label(login_screen, text="").pack()
     Button(login_screen, text="Login", width=10, height=1, command = customerlogin_verify).pack()
 
@@ -216,7 +231,7 @@ def loginAdmin():
     adminID_verify = StringVar()
     password2_verify = StringVar()
  
-    global username2_login_entry
+    global adminID_login_entry
     global password2_login_entry
  
     Label(login_screen, text="adminID * ").pack()
@@ -224,8 +239,8 @@ def loginAdmin():
     adminID_login_entry.pack()
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password2_verify, show= '*')
-    password_login_entry.pack()
+    password2_login_entry = Entry(login_screen, textvariable=password2_verify, show= '*')
+    password2_login_entry.pack()
     Label(login_screen, text="").pack()
     Button(login_screen, text="Login", width=10, height=1, command = adminlogin_verify).pack()
  
