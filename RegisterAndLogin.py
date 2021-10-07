@@ -5,16 +5,11 @@ import mysql.connector
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="password"
+  password="password",
+  database="OSHES"
 )
 
-mycursor = mydb.cursor()
-
-mycursor.execute("SHOW DATABASES")
-
-for x in mycursor:
-  print(x)
-
+#USE "OSHES"
 
 from tkinter import *
 import os
@@ -101,10 +96,13 @@ def registerCustomer():
     address_entry.pack()
 
     #populate database
-    sql = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
-    val = [customerID, fName, lName, gender, emailAddress, address, phoneNumber, password1]
-    #mycursor.execute(sql, val)
-    #mydb.commit()
+    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
+    val = (customerID.get(), fName.get(), lName.get(), gender.get(), emailAddress.get(), address.get(), phoneNumber.get(), password1.get())
+    
+    mycursor = mydb.cursor()
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print('done')
 
 
     Label(register_screen, text="").pack()
@@ -301,7 +299,7 @@ def customerlogin_verify():
 
 
     if myresult[0] == customerUsername:
-        if myresult[1] == customerPasword:
+        if myresult[1] == customerPassword:
             login_sucess()
         else:
             password_not_recognised()
