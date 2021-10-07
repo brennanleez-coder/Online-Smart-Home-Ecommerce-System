@@ -26,6 +26,7 @@ def registerCustomer():
     global emailAddress
     global phoneNumber
     global address
+
     global address_entry
     global customerID_entry
     global fName_entry
@@ -89,11 +90,7 @@ def registerCustomer():
     address_entry = Entry(register_screen, textvariable=address)
     address_entry.pack()
 
-    #populate database
-    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
-    val = (customerID.get(), fName.get(), lName.get(), gender.get(), emailAddress.get(), address.get(), phoneNumber.get(), password1.get())
-    mycursor.execute(sql, val)
-    mydb.commit()
+    
 
 
     Label(register_screen, text="").pack()
@@ -166,7 +163,7 @@ def registerAdministrator():
     phoneNumber_entry = Entry(register_screen, textvariable=phoneNumber)
     phoneNumber_entry.pack()
 
-        #populate database
+    #populate database
     sql = "INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s) "
     val = [adminID, fName, lName, gender, emailAddress, address, phoneNumber, password2]
     mycursor.execute(sql, val)
@@ -237,7 +234,7 @@ def loginAdmin():
  
 def register_customer():
  
-    customerID_info = customerID.get()
+    customerID_info = customerID_entry.get()
     password1_info = password1.get()
     gender_info = gender.get()
     emailAddress_info = emailAddress.get()
@@ -246,12 +243,18 @@ def register_customer():
 
  
 
-    customerID_entry.delete(0, END)
-    password1_entry.delete(0, END)
-    gender_entry.delete(0, END)
-    emailAddress_entry.delete(0, END)
-    phoneNumber_entry.delete(0, END)
-    address_entry.delete(0, END)
+    # customerID_entry.delete(0, END)
+    # password1_entry.delete(0, END)
+    # gender_entry.delete(0, END)
+    # emailAddress_entry.delete(0, END)
+    # phoneNumber_entry.delete(0, END)
+    # address_entry.delete(0, END) 
+
+    #populate database
+    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
+    val = (customerID_entry.get(), fName_entry.get(), lName_entry.get(), gender_entry.get(), emailAddress_entry.get(), address_entry.get(), phoneNumber_entry.get(), password1_entry.get())
+    mycursor.execute(sql, val)
+    mydb.commit()
  
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()# Implementing event on register button
  
