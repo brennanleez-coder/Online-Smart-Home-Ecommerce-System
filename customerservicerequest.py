@@ -31,20 +31,39 @@ def customerMakesServiceRequest(itemID, itemInfo):
     warrantyInWeeks = 4 * warranty
     warrantyEndDate = retrievedPurchaseDate + timedelta(weeks=warrantyInWeeks)
 
-    now = date.today().strftime("%d/%m/%Y")
+    #request date
+    now = date.today().strftime("%d/%m/%Y") 
 
     if now <= warrantyEndDate:
         requestStatus = "Submitted"
     else:
         requestStatus = "Submitted and Waiting for payment"
-    
-    sql1 = "UPDATE ServiceRequest SET requestStatus = %s"
-    val1 = [requestStatus]
-    mycursor.execute(sql1,val1)
-    mydb.commmit()
 
-    sql2 = "UPDATE Item SET serviceStatus = %s"
-    val2 = ["Waiting for approval"]
+    sql1 = "SELECT purchasedByCustID from Buys WHERE itemID = %s"
+    val1 = [itemID]
+    mycursor.execute(sql1,val1)
+    myresult1 = mycursor.fetchall()
+
+    
+
+    
+    sql2 = "INSERT INTO ServiceRequest (createdByCustID, requestStatus, requestDate) VALUES (%s, %s, %s)"
+    val2 = [myresult1, requestStatus, now]
+    mycursor.execute(sql2,val2)
+    mydb.commmit()
+    
+
+
+    if requestStatus == "Submitted and Waiting for payment":
+
+
+    ##################UPDATE SERVICE STATUS AFTER SEVICE FEE IS PAID##################################################### KIV
+    #update for the admin
+
+
+    
+    sql3 = "UPDATE Item SET serviceStatus = %s"
+    val3 = ["Waiting for approval"]
     mycursor.execute(sql2,val2)
     mydb.commmit()
 
