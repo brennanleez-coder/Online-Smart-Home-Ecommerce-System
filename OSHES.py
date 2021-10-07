@@ -241,8 +241,6 @@ def register_customer():
     phoneNumber_info = phoneNumber.get()
     address_info = address.get()
 
- 
-
     # customerID_entry.delete(0, END)
     # password1_entry.delete(0, END)
     # gender_entry.delete(0, END)
