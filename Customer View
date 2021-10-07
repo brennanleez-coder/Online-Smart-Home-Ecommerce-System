@@ -1,0 +1,279 @@
+from tkinter import *
+import os
+import mysql.connector
+
+
+
+#Customer view
+global lst
+lst=[]
+def purchased_lst(item):
+    lst.append(item)
+    
+
+def confirm_purchase_safe1():
+    global confirmsafe1
+    confirmsafe1=Toplevel(safe_1)
+    confirmsafe1.title("Confirmation Page")
+    confirmsafe1.geometry("300x250")
+    Label(confirmsafe1,text="Thank you for purchasing Safe 1!").pack()
+    purchased_lst("Safe 1")
+    
+    
+
+def confirm_purchase_safe2():
+    global confirmsafe2
+    confirmsafe2=Toplevel(safe_2)
+    confirmsafe2.title("Confirmation Page")
+    confirmsafe2.geometry("300x250")
+    Label(confirmsafe2,text="Thank you for purchasing Safe 2!").pack()
+    purchased_lst("Safe 2")
+
+def confirm_purchase_safe3():
+    global confirmsafe3
+    confirmsafe3=Toplevel(safe_3)
+    confirmsafe3.title("Confirmation Page")
+    confirmsafe3.geometry("300x250")
+    Label(confirmsafe3,text="Thank you for purchasing Safe 3!").pack()
+    purchased_lst("Safe 3")
+
+def confirm_purchase_sh1():
+    global confirmsh1
+    confirmsh1=Toplevel(sh1lock)
+    confirmsh1.title("Confirmation Page")
+    confirmsh1.geometry("300x250")
+    Label(confirmsh1,text="Thank you for purchasing Smarthome 1 Lock!").pack()
+    purchased_lst("Smarthome 1 Lock")
+
+def confirm_purchase_light1():
+    global confirmlight1
+    confirmlight1=Toplevel(light1info)
+    confirmlight1.title("Confirmation Page")
+    confirmlight1.geometry("300x250")
+    Label(confirmlight1,text="Thank you for purchasing Light 1!").pack()
+    purchased_lst("Light 1")
+
+def confirm_purchase_light2():
+    global confirmlight2
+    confirmlight2=Toplevel(light2info)
+    confirmlight2.title("Confirmation Page")
+    confirmlight2.geometry("300x250")
+    Label(confirmlight2,text="Thank you for purchasing Light 2!").pack()
+    purchased_lst("Light 2")
+
+def confirm_purchase_sm1():
+    global csm1
+    csm1=Toplevel(smarthome1info)
+    csm1.title("Confirmation Page")
+    csm1.geometry("300x250")
+    Label(csm1,text="Thank you for purchasing Smarthome 1 Light!").pack()
+    purchased_lst("Smarthome 1 Light")
+    
+def safe1():
+    global safe_1
+    safe_1=Toplevel(lock)
+    safe_1.title("Safe1")
+    safe_1.geometry("300x250")
+    Label(safe_1,text="Product Category: Locks").pack()
+    Label(safe_1,text="Model: Safe1").pack()
+    Label(safe_1,text="Price: $58").pack()
+    Label(safe_1,text="Warranty: 15 years").pack()
+    Label(safe_1,text="Lock Availability: ").pack()
+    Button(safe_1,text="Add to Cart",command=confirm_purchase_safe1).pack()
+
+
+    
+def safe2():
+    global safe_2
+    safe_2=Toplevel(lock)
+    safe_2.title("Safe2")
+    safe_2.geometry("300x250")
+    Label(safe_2,text="Product Category: Locks").pack()
+    Label(safe_2,text="Model: Safe2").pack()
+    Label(safe_2,text="Price: $60").pack()
+    Label(safe_2,text="Warranty: 20 years").pack()
+    Label(safe_2,text="Lock Availability: ").pack()
+    Button(safe_2,text="Add to Cart",command=confirm_purchase_safe2).pack()
+    
+    
+def safe3():
+    global safe_3
+    safe_3=Toplevel(lock)
+    safe_3.title("Safe3")
+    safe_3.geometry("300x250")
+    Label(safe_3,text="Product Category: Locks").pack()
+    Label(safe_3,text="Model: Safe3").pack()
+    Label(safe_3,text="Price: $48").pack()
+    Label(safe_3,text="Warranty: 6 years").pack()
+    Label(safe_3,text="Lock Availability: ").pack()
+    Button(safe_3,text="Add to Cart",command=confirm_purchase_safe3).pack()
+    
+def sh1_lock():
+    global sh1lock
+    sh1lock=Toplevel(lock)
+    sh1lock.title("Safehome 1-Lock")
+    sh1lock.geometry("300x250")
+    Label(sh1lock,text="Product Category: Locks").pack()
+    Label(sh1lock,text="Model: Safehome 1").pack()
+    Label(sh1lock,text="Price: $32").pack()
+    Label(sh1lock,text="Warranty: 5 years").pack()
+    Label(sh1lock,text="Lock Availability: ").pack()
+    Button(sh1lock,text="Add to Cart",command=confirm_purchase_sh1).pack()
+    
+    
+def smarthome1_info():
+    global smarthome1info
+    smarthome1info=Toplevel(light)
+    smarthome1info.title("Smarthome 1")
+    smarthome1info.geometry("300x250")
+    Label(smarthome1info,text="Product Category: Lights").pack()
+    Label(smarthome1info,text="Model: Smarthome 1").pack()
+    Label(smarthome1info,text="Price: $45").pack()
+    Label(smarthome1info,text="Warranty: 20 years").pack()
+    Label(smarthome1info,text="Light Availability: ").pack()
+    Button(smarthome1info,text="Add to Cart",command=confirm_purchase_sm1).pack()
+    
+def light2_info():
+    global light2info
+    light2info=Toplevel(light)
+    light2info.title("Light 2")
+    light2info.geometry("300x250")
+    Label(light2info,text="Product Category: Lights").pack()
+    Label(light2info,text="Model: Light 2").pack()
+    Label(light2info,text="Price: $20").pack()
+    Label(light2info,text="Warranty: 5 years").pack()
+    Label(light2info,text="Availability: ").pack()
+    Button(light2info,text="Add to Cart",command=confirm_purchase_light2).pack()
+
+def light1_info():
+    global light1info
+    light1info=Toplevel(light)
+    light1info.title("Light 1")
+    light1info.geometry("300x250")
+    Label(light1info,text="Product Category: Lights").pack()
+    Label(light1info,text="Model: Light 1").pack()
+    Label(light1info,text="Price: $7.50").pack()
+    Label(light1info,text="Warranty: 10 years").pack()
+    Label(light1info,text="Availability: ").pack()
+    Button(light1info,text="Add to Cart",command=confirm_purchase_light1).pack()
+    
+def select_lock():
+    global lock
+    lock=Toplevel(simple)
+    lock.title("Locks")
+    lock.geometry("300x250")
+    Button(lock,text="Safe1",height="2",width="30",command=safe1).pack()
+    Button(lock,text="Safe2",height="2",width="30",command=safe2).pack()
+    Button(lock,text="Safe3",height="2",width="30",command=safe3).pack()
+    Button(lock,text="Smarthome 1",height="2",width="30",command=sh1_lock).pack()
+
+
+
+
+    
+def select_light():
+    global light
+    light=Toplevel(simple)
+    light.title("Lights")
+    light.geometry("300x250")
+    Button(light,text="Light 1",command=light1_info).pack()
+    Button(light,text="Light 2",command=light2_info).pack()
+    Button(light,text="Smarthome 1",command=smarthome1_info).pack()
+
+def selected(event):
+    #If click "Product Category"
+    if clicked.get()=="Product Category":
+        Button(simple,text="Lights",height="2",width="30",command=select_light).pack()
+        Button(simple,text="Locks",height="2",width="30",command=select_lock).pack()
+    
+        
+        
+
+
+#Create the simple search window. 
+def simple_search():
+    global simple
+    global clicked
+    simple=Toplevel(window)
+    simple.title("Simple Search")
+    simple.geometry("300x250")
+
+    #Two options Product Category or Model
+    options=["Product Category"]
+
+    clicked=StringVar()
+    clicked.set("Simple Product Search")
+    drop=OptionMenu(simple,clicked,*options,command=selected).pack()
+    
+
+        
+        
+        
+#Create the advanced search window
+def advanced_search():
+    #Create fields for Product Category,Model,Price,Production Year
+    global advanced
+    advanced=Toplevel(window)
+    advanced.title("Advanced Search")
+    advanced.geometry("300x250")
+    
+    
+    
+
+
+    
+    
+    
+    
+#Create the window
+def search():
+    global window
+    window=Toplevel(customer)
+    window.title('Product Search')
+    window.geometry("300x200+10+20")
+
+
+#Label the window
+    Label(window,text="Customer Product Search",bg='orange',width="300",height="1",font=("Calibri",13)).pack()
+    Label(window,text="").pack()
+
+#Create Simple search and advanced search buttons(separate)
+    Button(window,text="Simple Search",height="2",width="30",command=simple_search).pack()
+    Button(window,text="Advanced Search",height="2",width="30",command=advanced_search).pack()
+    
+
+#If click product category, then product category list appears.
+#If click model, model category list appears as a drop down list
+    
+def manage_items(event):
+    if clicked_items.get() in lst:
+        Button(items,text="Request Service",height="2",width="30").pack()
+        Button(items,text="Pay Service Fees",height="2",width="30").pack()
+        Button(items,text="Cancel Service Request",height="2",width="30").pack()
+
+
+def view_items():
+    global items
+    global clicked_items
+    global items_options
+    items=Toplevel(customer)
+    items.title("List of Purchased Items")
+    items.geometry("300x250")
+    items_options=lst
+    clicked_items=StringVar()
+    clicked_items.set("Purchased Items")
+    drop=OptionMenu(items,clicked_items,*items_options,command=manage_items).pack()
+    
+    
+def customerview():
+    global customer
+    customer=Tk()
+    customer.title("Customer View")
+    customer.geometry("300x250")
+    Label(customer,text="What would you like to do?",bg='green',width="300",height="1",font=("Calibri",16)).pack()
+    Button(customer,text="Search Products",height="2",width="30",command=search).pack()
+    Button(customer,text="View Products",height="2",width="30",command=view_items).pack()
+    customer.mainloop()
+    
+
+customerview()
