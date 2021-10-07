@@ -5,12 +5,20 @@ import mysql.connector
 
 
 #Customer view
+global lst
+lst=[]
+def purchased_lst(item):
+    lst.append(item)
+    
+
 def confirm_purchase_safe1():
     global confirmsafe1
     confirmsafe1=Toplevel(safe_1)
     confirmsafe1.title("Confirmation Page")
     confirmsafe1.geometry("300x250")
     Label(confirmsafe1,text="Thank you for purchasing Safe 1!").pack()
+    purchased_lst("Safe 1")
+    
     
 
 def confirm_purchase_safe2():
@@ -19,6 +27,7 @@ def confirm_purchase_safe2():
     confirmsafe2.title("Confirmation Page")
     confirmsafe2.geometry("300x250")
     Label(confirmsafe2,text="Thank you for purchasing Safe 2!").pack()
+    purchased_lst("Safe 2")
 
 def confirm_purchase_safe3():
     global confirmsafe3
@@ -26,13 +35,15 @@ def confirm_purchase_safe3():
     confirmsafe3.title("Confirmation Page")
     confirmsafe3.geometry("300x250")
     Label(confirmsafe3,text="Thank you for purchasing Safe 3!").pack()
+    purchased_lst("Safe 3")
 
 def confirm_purchase_sh1():
     global confirmsh1
     confirmsh1=Toplevel(sh1lock)
     confirmsh1.title("Confirmation Page")
     confirmsh1.geometry("300x250")
-    Label(confirmsh1,text="Thank you for purchasing Smarthome 1!").pack()
+    Label(confirmsh1,text="Thank you for purchasing Smarthome 1 Lock!").pack()
+    purchased_lst("Smarthome 1 Lock")
 
 def confirm_purchase_light1():
     global confirmlight1
@@ -40,6 +51,7 @@ def confirm_purchase_light1():
     confirmlight1.title("Confirmation Page")
     confirmlight1.geometry("300x250")
     Label(confirmlight1,text="Thank you for purchasing Light 1!").pack()
+    purchased_lst("Light 1")
 
 def confirm_purchase_light2():
     global confirmlight2
@@ -47,6 +59,7 @@ def confirm_purchase_light2():
     confirmlight2.title("Confirmation Page")
     confirmlight2.geometry("300x250")
     Label(confirmlight2,text="Thank you for purchasing Light 2!").pack()
+    purchased_lst("Light 2")
 
 def confirm_purchase_sm1():
     global csm1
@@ -54,6 +67,7 @@ def confirm_purchase_sm1():
     csm1.title("Confirmation Page")
     csm1.geometry("300x250")
     Label(csm1,text="Thank you for purchasing Smarthome 1 Light!").pack()
+    purchased_lst("Smarthome 1 Light")
     
 def safe1():
     global safe_1
@@ -167,7 +181,6 @@ def select_light():
     Button(light,text="Smarthome 1",command=smarthome1_info).pack()
 
 def selected(event):
-    #myLabel=Label(simple,text=clicked.get()).pack()
     #If click "Product Category"
     if clicked.get()=="Product Category":
         Button(simple,text="Lights",height="2",width="30",command=select_light).pack()
@@ -231,7 +244,27 @@ def search():
 
 #If click product category, then product category list appears.
 #If click model, model category list appears as a drop down list
+    
+def manage_items(event):
+    if clicked_items.get() in lst:
+        Button(items,text="Request Service",height="2",width="30").pack()
+        Button(items,text="Pay Service Fees",height="2",width="30").pack()
+        Button(items,text="Cancel Service Request",height="2",width="30").pack()
 
+
+def view_items():
+    global items
+    global clicked_items
+    global items_options
+    items=Toplevel(customer)
+    items.title("List of Purchased Items")
+    items.geometry("300x250")
+    items_options=lst
+    clicked_items=StringVar()
+    clicked_items.set("Purchased Items")
+    drop=OptionMenu(items,clicked_items,*items_options,command=manage_items).pack()
+    
+    
 def customerview():
     global customer
     customer=Tk()
@@ -239,7 +272,7 @@ def customerview():
     customer.geometry("300x250")
     Label(customer,text="What would you like to do?",bg='green',width="300",height="1",font=("Calibri",16)).pack()
     Button(customer,text="Search Products",height="2",width="30",command=search).pack()
-    Button(customer,text="View Products",height="2",width="30").pack()
+    Button(customer,text="View Products",height="2",width="30",command=view_items).pack()
     customer.mainloop()
     
 
