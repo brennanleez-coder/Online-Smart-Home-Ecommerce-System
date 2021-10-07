@@ -12,7 +12,6 @@ mydb = mysql.connector.connect(user='root', password='password',
 
 mycursor = mydb.cursor()
 
-
 def registerCustomer():
     global register_screen
     register_screen = Toplevel(main_screen)
@@ -91,8 +90,8 @@ def registerCustomer():
     address_entry.pack()
 
     #populate database
-    sql = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
-    val = [customerID, fName, lName, gender, emailAddress, address, phoneNumber, password1]
+    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
+    val = (customerID.get(), fName.get(), lName.get(), gender.get(), emailAddress.get(), address.get(), phoneNumber.get(), password1.get())
     mycursor.execute(sql, val)
     mydb.commit()
 
@@ -198,12 +197,12 @@ def loginCustomer():
     global password1_login_entry
  
     Label(login_screen, text="customerID * ").pack()
-    adminID_login_entry = Entry(login_screen, textvariable=customerID_verify)
-    adminID_login_entry.pack()
+    customerID_login_entry = Entry(login_screen, textvariable=customerID_verify)
+    customerID_login_entry.pack()
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password1_verify, show= '*')
-    password_login_entry.pack()
+    password1_login_entry = Entry(login_screen, textvariable=password1_verify, show= '*')
+    password1_login_entry.pack()
     Label(login_screen, text="").pack()
     Button(login_screen, text="Login", width=10, height=1, command = customerlogin_verify).pack()
 
@@ -229,8 +228,8 @@ def loginAdmin():
     adminID_login_entry.pack()
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password2_verify, show= '*')
-    password_login_entry.pack()
+    password2_login_entry = Entry(login_screen, textvariable=password2_verify, show= '*')
+    password2_login_entry.pack()
     Label(login_screen, text="").pack()
     Button(login_screen, text="Login", width=10, height=1, command = adminlogin_verify).pack()
  
@@ -291,7 +290,7 @@ def customerlogin_verify():
 
 
     if myresult[0] == customerUsername:
-        if myresult[1] == customerPasword:
+        if myresult[1] == customerPassword:
             login_sucess()
         else:
             password_not_recognised()
