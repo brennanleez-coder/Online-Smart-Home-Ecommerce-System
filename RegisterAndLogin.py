@@ -66,33 +66,33 @@ def registerCustomer():
 
     fName_lable = Label(register_screen, text="fName * ")
     fName_lable.pack()
-    fName_entry = Entry(register_screen, textvariable=fName, show='*')
+    fName_entry = Entry(register_screen, textvariable=fName)
     fName_entry.pack()
 
 
     lName_lable = Label(register_screen, text="lName * ")
     lName_lable.pack()
-    lName_entry = Entry(register_screen, textvariable=lName, show='*')
+    lName_entry = Entry(register_screen, textvariable=lName)
     lName_entry.pack()
 
     gender_lable = Label(register_screen, text="gender * ")
     gender_lable.pack()
-    gender_entry = Entry(register_screen, textvariable=gender, show='*')
+    gender_entry = Entry(register_screen, textvariable=gender)
     gender_entry.pack()
 
     emailAddress_lable = Label(register_screen, text="emailAddress * ")
     emailAddress_lable.pack()
-    emailAddress_entry = Entry(register_screen, textvariable=emailAddress, show='*')
+    emailAddress_entry = Entry(register_screen, textvariable=emailAddress)
     emailAddress_entry.pack()
 
     phoneNumber_lable = Label(register_screen, text="phoneNumber * ")
     phoneNumber_lable.pack()
-    phoneNumber_entry = Entry(register_screen, textvariable=phoneNumber, show='*')
+    phoneNumber_entry = Entry(register_screen, textvariable=phoneNumber)
     phoneNumber_entry.pack()
 
     address_lable = Label(register_screen, text="address * ")
     address_lable.pack()
-    address_entry = Entry(register_screen, textvariable=address, show='*')
+    address_entry = Entry(register_screen, textvariable=address)
     address_entry.pack()
 
     #populate database
@@ -377,7 +377,7 @@ def delete_user_not_found_screen():
 def main_account_screen():
     global main_screen
     main_screen = Tk()
-    main_screen.geometry("300x250")
+    main_screen.geometry("450x500")
     main_screen.title("Account Login")
     Label(text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
     Label(text="").pack()
