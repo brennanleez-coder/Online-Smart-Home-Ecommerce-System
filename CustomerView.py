@@ -9,7 +9,7 @@ from tkinter import messagebox
 from datetime import date
 from tkinter.constants import W
 from datetime import timedelta
-from SearchFunctions import advancedSearch, advancedSearchScreen, simpleSearch, simpleSearchScreen, simpleSearch, checkout
+from SearchFunctions import advancedSearchScreen, simpleSearchScreen
 
 
 def customerMakesServiceRequest(itemID, itemInfo):
@@ -126,7 +126,6 @@ def searchScreen():
     
 def customerview():
     global customer
-    print("out")
     customer=Tk()
     customer.title("Customer View")
     customer.geometry("300x250")

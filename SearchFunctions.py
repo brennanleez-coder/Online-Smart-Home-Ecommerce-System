@@ -26,7 +26,7 @@ allModels = ["Light1", "Light2", "SmartHome1", "Safe1", "Safe2", "Safe3"]
 def simpleSearchScreen():
 
     global simpleSearch_screen
-    simpleSearch_screen = Tk()
+    simpleSearch_screen = Toplevel()
     simpleSearch_screen.title("Simple Search")
     simpleSearch_screen.geometry("300x350")
     Label(simpleSearch_screen, text="Filter by:").pack()
@@ -38,7 +38,7 @@ def simpleSearchScreen():
     catModelInput = Entry(simpleSearch_screen, textvariable=catModel)
     catModelInput.pack()
     
-    Button(simpleSearch_screen, text="Search", width=10, height=1, command = lambda: simpleSearch(catModel)).pack()
+    Button(simpleSearch_screen, text="Search", width=10, height=1, command = lambda: [simpleSearch(catModel), simpleSearch_screen.destroy()]).pack()
     Button(simpleSearch_screen, width=10, height=1, text="Back", command= simpleSearch_screen.destroy).pack()
 
 
@@ -97,8 +97,6 @@ def simpleSearch(catModel):
 
     catModelInput.delete(0, END)
 
-    simpleSearch_screen.destroy()
-
 
 
 # ------------------------------------------ ADVANCED SEARCH ------------------------------------------------------------------------------------ 
@@ -106,7 +104,7 @@ def simpleSearch(catModel):
 def advancedSearchScreen():
 
     global advancedSearch_screen
-    advancedSearch_screen = Tk()
+    advancedSearch_screen = Toplevel()
     advancedSearch_screen.title("Advanced Search")
     advancedSearch_screen.geometry("300x550")
     Label(advancedSearch_screen, text="Filter by:").pack()
@@ -138,7 +136,7 @@ def advancedSearchScreen():
     powerSupplyInput = Entry(advancedSearch_screen, textvariable=powerSupply)
     powerSupplyInput.pack()
     
-    Button(advancedSearch_screen, text="Search", width=10, height=1, command = lambda: advancedSearch(catModel, color, factory, prodYear, powerSupply)).pack()
+    Button(advancedSearch_screen, text="Search", width=10, height=1, command = lambda: [advancedSearch(catModel, color, factory, prodYear, powerSupply), advancedSearch_screen.destroy()]).pack()
     Button(advancedSearch_screen, width=10, height=1, text="Back", command= advancedSearch_screen.destroy).pack(pady=20)
 
 
@@ -213,7 +211,6 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
     prodYearInput.delete(0, END)
     powerSupplyInput.delete(0, END)
 
-    advancedSearch_screen.destroy()
 
 
 
@@ -221,7 +218,7 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
 def itemSearchScreen():
 
     global itemSearch_screen
-    itemSearch_screen = Tk()
+    itemSearch_screen = Toplevel()
     itemSearch_screen.title("Item Search")
     itemSearch_screen.geometry("300x350")
     Label(itemSearch_screen, text="Filter by:").pack()
@@ -233,7 +230,7 @@ def itemSearchScreen():
     itemIDInput = Entry(itemSearch_screen, textvariable=itemID)
     itemIDInput.pack()
     
-    Button(itemSearch_screen, text="Search", width=10, height=1, command = lambda: itemSearch(itemID)).pack()
+    Button(itemSearch_screen, text="Search", width=10, height=1, command = lambda: [itemSearch(itemID), itemSearch_screen.destroy()]).pack()
     Button(itemSearch_screen, width=10, height=1, text="Back", command= itemSearch_screen.destroy).pack()
 
 
@@ -261,9 +258,6 @@ def itemSearch(itemID):
     Button(itemSearchResults_screen, width=10, height=1, text="Close", command= itemSearchResults_screen.destroy).pack(pady=30)
 
     itemIDInput.delete(0, END)
-
-    itemSearch_screen.destroy()
-
 
 
 # ------------------------------------------ CHECKOUT --------------------------------------------------------------------------------------------- 
@@ -308,10 +302,9 @@ def checkout(groupItemData, selection):
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
     
 
-# ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
+# ------------------------------------------ test --------------------------------------------------------------------------------------------- 
 def searchScreen():
-    global search_screen
-    search_screen = Tk()
+    search_screen = Toplevel()
     search_screen.geometry("300x250")
     search_screen.title("Search")
     Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack(pady=20)
@@ -328,5 +321,5 @@ def main_account_screen():
 
     main_screen.mainloop()
 
-
-# main_account_screen()
+# FOR TESTING ONLY
+#main_account_screen()
