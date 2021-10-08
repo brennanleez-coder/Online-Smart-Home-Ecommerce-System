@@ -24,7 +24,7 @@ def approves(requestID, administratorID):
     mydb.commit()
 
     today = date.today()
-    d1 = today.strftime("%d/%m/%Y")
+    d1 = today.strftime("%y/%m/%d")
 
     sql2 = "INSERT INTO Approves (approvedByAdminID, requestID, approvalDate) VALUES (%s, %d, %s)"
     val2 = [administratorID, requestID, d1]
