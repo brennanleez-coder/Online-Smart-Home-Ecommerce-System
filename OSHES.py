@@ -356,6 +356,8 @@ def user_not_found():
  
 def delete_login_success():
     login_success_screen.destroy()
+    login_screen.destroy()
+    main_screen.destroy()
  
  
 def delete_password_not_recognised():
