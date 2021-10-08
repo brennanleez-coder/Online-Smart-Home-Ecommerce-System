@@ -13,6 +13,15 @@ SELECT * from Approves;
 SELECT * from Cancels;
 
 
+//INSERT ADMIN ACCOUNT FOR PRESENTATION
+INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES ("admin", "ryan","tan","male","12341234","admin");
+
+// administrator function
+SELECT itemID
+
+
+
+
 //test cases
 
 INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("1", "123","123","123","123","123","123","123");
