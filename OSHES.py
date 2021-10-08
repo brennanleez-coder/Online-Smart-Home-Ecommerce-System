@@ -46,7 +46,7 @@ def registerCustomer():
     address = StringVar() 
 
  
-    Label(register_screen, text="Please enter details below", bg="blue").pack()
+    Label(register_screen, text="Please enter details below", bg="white").pack()
     Label(register_screen, text="").pack()
 
     customerID_lable = Label(register_screen, text="customerID * ")
@@ -163,12 +163,6 @@ def registerAdministrator():
     phoneNumber_entry = Entry(register_screen, textvariable=phoneNumber)
     phoneNumber_entry.pack()
 
-    #populate database
-    sql = "INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s) "
-    val = [adminID, fName, lName, gender, emailAddress, address, phoneNumber, password2]
-    mycursor.execute(sql, val)
-    mydb.commit()
-
 
     Label(register_screen, text="").pack()
     Button(register_screen, text="Register", width=10, height=1, bg="blue", command = register_admin).pack()
@@ -235,24 +229,26 @@ def loginAdmin():
 def register_customer():
  
     customerID_info = customerID_entry.get()
-    password1_info = password1.get()
-    gender_info = gender.get()
-    emailAddress_info = emailAddress.get()
-    phoneNumber_info = phoneNumber.get()
-    address_info = address.get()
-
-    # customerID_entry.delete(0, END)
-    # password1_entry.delete(0, END)
-    # gender_entry.delete(0, END)
-    # emailAddress_entry.delete(0, END)
-    # phoneNumber_entry.delete(0, END)
-    # address_entry.delete(0, END) 
+    password1_info = password1_entry.get()
+    gender_info = gender_entry.get()
+    emailAddress_info = emailAddress_entry.get()
+    phoneNumber_info = phoneNumber_entry.get()
+    address_info = address_entry.get()
 
     #populate database
     sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
     val = (customerID_entry.get(), fName_entry.get(), lName_entry.get(), gender_entry.get(), emailAddress_entry.get(), address_entry.get(), phoneNumber_entry.get(), password1_entry.get())
     mycursor.execute(sql, val)
     mydb.commit()
+
+    customerID_entry.delete(0, END)
+    fName_entry.delete(0, END)
+    lName_entry.delete(0, END)
+    password1_entry.delete(0, END)
+    gender_entry.delete(0, END)
+    emailAddress_entry.delete(0, END)
+    phoneNumber_entry.delete(0, END)
+    address_entry.delete(0, END) 
  
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()# Implementing event on register button
  
@@ -264,14 +260,18 @@ def register_admin():
     gender_info = gender.get()
     phoneNumber_info = phoneNumber.get()
 
- 
+    #populate database
+    sql = ("INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s) ")
+    val = (adminID_entry.get(), fName_entry.get(), lName_entry.get(), gender_entry.get(), phoneNumber_entry.get(), password2_entry.get())
+    mycursor.execute(sql, val)
+    mydb.commit()
 
     adminID_entry.delete(0, END)
     password2_entry.delete(0, END)
     gender_entry.delete(0, END)
-    emailAddress_entry.delete(0, END)
+    fName_entry.delete(0, END)
+    lName_entry.delete(0, END)
     phoneNumber_entry.delete(0, END)
-    address_entry.delete(0, END)
  
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()
  
@@ -283,8 +283,8 @@ def customerlogin_verify():
     customerID_login_entry.delete(0, END)
     password1_login_entry.delete(0, END)
  
-    sql = "SELECT customerID , password FROM Customer WHERE customerID = %s AND password = %s"
-    val = [customerUsername, customerPassword]
+    sql = ("SELECT customerID , password FROM Customer WHERE customerID = %s AND password = %s")
+    val = (customerUsername, customerPassword)
     mycursor.execute(sql, val)
     mydb.commit()
     myresult = mycursor.fetchall()
@@ -306,8 +306,8 @@ def adminlogin_verify():
     password2_login_entry.delete(0, END)
  
 
-    sql = "SELECT administratorID , password FROM Admin WHERE administatorID = %s AND password = %s"
-    val = [adminUsername, adminPassword]
+    sql = ("SELECT administratorID , password FROM Admin WHERE administatorID = %s AND password = %s")
+    val = (adminUsername, adminPassword)
     mycursor.execute(sql, val)
     mydb.commit()
     myresult = mycursor.fetchall()
@@ -320,6 +320,8 @@ def adminlogin_verify():
             password_not_recognised()
     else:
         user_not_found()
+
+
 # Designing popup for login success
  
 def login_sucess():
