@@ -51,7 +51,7 @@ def makeServiceFeePayment(requestID, serviceFee, paidByCustID): #button to make 
         mycursor.execute(sql3)
         myresult1 = mycursor.fetchall()
 
-        sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %s"
+        sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %d"
         val4 = [requestID]
         mycursor.execute(sql4,val4)
         myresult2 = mycursor.fetchall()
