@@ -131,7 +131,7 @@ def customerview():
     customer.geometry("300x250")
     Label(customer,text="What would you like to do?",bg='green',width="300",height="1",font=("Calibri",16)).pack()
     Button(customer,text="Search Products",height="2",width="30",command=searchScreen).pack()
-    Button(customer,text="View Products",height="2",width="30",command=view_products).pack()
+    Button(customer,text="View Purchased Products",height="2",width="30",command=view_products).pack()
     customer.mainloop()
     
 
