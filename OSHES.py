@@ -380,7 +380,7 @@ def main_account_screen():
     Label(text="").pack()
     Button(text="Administrator Login", height="2", width="30", command = loginAdmin).pack()
     Label(text="").pack()
-    Button(text="Administrator Register", height="2", width="30", command=registerAdministrator).pack()
+    #Button(text="Administrator Register", height="2", width="30", command=registerAdministrator).pack()
  
     main_screen.mainloop()
  
