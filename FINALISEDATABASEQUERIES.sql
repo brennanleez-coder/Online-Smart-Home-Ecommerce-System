@@ -32,7 +32,6 @@ CREATE TABLE Item (
     productionYear VARCHAR(50),
     colour VARCHAR(10),
     productID INT(2),
-    
     PRIMARY KEY (itemID)
 );
 
@@ -43,8 +42,9 @@ CREATE TABLE Product (
     cost INT(3),
     model VARCHAR(10),
     category VARCHAR(10),
-    CONSTRAINT product_ibfk_1 FOREIGN KEY (productID) REFERENCES Item(productID),
-    PRIMARY KEY (productID)
+    PRIMARY KEY (productID),
+	FOREIGN KEY (productID) REFERENCES Item(productID)
+    
 );
 
 CREATE TABLE Services(

@@ -381,6 +381,10 @@ def main_account_screen():
     Label(text="").pack()
     Button(text="Administrator Login", height="2", width="30", command = loginAdmin).pack()
     Label(text="").pack()
+<<<<<<< HEAD
+=======
+    #Button(text="Administrator Register", height="2", width="30", command=registerAdministrator).pack()
+>>>>>>> 41623e02982bf69593ea2955fa1b2cb161f745e1
  
     main_screen.mainloop()
  
