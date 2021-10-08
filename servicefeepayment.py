@@ -1,6 +1,6 @@
 from datetime import date
 
-def calculateServiceFee(requestStatus, requestDate, itemCost):
+def calculateServiceFee(requestStatus, requestDate, itemCost, requestID):
 
     if requestStatus == "Submitted":
         serviceFee = 0
@@ -10,10 +10,25 @@ def calculateServiceFee(requestStatus, requestDate, itemCost):
 
     if requestStatus == "Submitted and Waiting for payment":
         serviceFee = 40 + 0.2*itemCost
+
+        sql = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %d"
+        val = [requestID]
+        mycursor.execute(sql4,val4)
+        myresult2 = mycursor.fetchall()
+
+        sql1 = "SELECT paymentID FROM Payment WHERE paymentID=(SELECT max(paymentID) FROM Payment)"
+        mycursor.execute(sql1)
+        myresult1 = mycursor.fetchall()
+
+        sql2 = "INSERT INTO ServiceFee (serviceFeeAmount, settledByPaymentID, creationDate, settlementDate) VALUES (%d, %d, %s, %s)"
+        val2 = [serviceFee, myresult1, myresult2, ""]
     
     return serviceFee
 
-def makeServiceFeePayment(requestID, serviceFee, paidByCustID): #button to make payment
+def makeServiceFeePayment(requestID, serviceFee, paidByCustID, requestDate, requestStatus, itemCost): #button to make payment
+   
+    serviceFee = calculateServiceFee(requestStatus, requestDate, itemCost, requestID)
+
     if serviceFee != 0:
         paymentAmount = serviceFee
         paymentDate = date.today().strftime("%d/%m/%Y")
