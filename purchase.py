@@ -21,7 +21,7 @@ def purchase(itemID, model, color, factory, productionYear, powerSupply, custome
 
 
     today = date.today()
-    d1 = today.strftime("%d/%m/%Y")
+    d1 = today.strftime("%y/%m/%d")
     #populate buys
     sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate, quantity) VALUES (%s, %s, %s, 1) "
     val2 = [itemIDAvailable, customerID, d1]

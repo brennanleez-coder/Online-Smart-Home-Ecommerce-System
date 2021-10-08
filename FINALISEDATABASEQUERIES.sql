@@ -25,21 +25,21 @@ CREATE TABLE Administrator (
 
 
 CREATE TABLE Item (
-    itemID INT(4) NOT NULL,
+    itemID VARCHAR(4) NOT NULL,
     purchaseStatus VARCHAR(50),
     powerSupply VARCHAR(50),
     factory VARCHAR(255),
     productionYear VARCHAR(50),
     colour VARCHAR(10),
-    productID INT(2),
+    productID INT UNIQUE NOT NULL,
     PRIMARY KEY (itemID)
 );
 
 CREATE TABLE Product (
-    productID INT(2),
-    warranty INT(2),
-    price INT(3),
-    cost INT(3),
+    productID INT UNIQUE NOT NULL,
+    warranty INT,
+    price INT,
+    cost INT,
     model VARCHAR(10),
     category VARCHAR(10),
     PRIMARY KEY (productID),
@@ -48,18 +48,17 @@ CREATE TABLE Product (
 );
 
 CREATE TABLE Services(
-	serviceID INT(20) NOT NULL AUTO_INCREMENT,
+	serviceID INT NOT NULL AUTO_INCREMENT,
     serviceStatus VARCHAR(50),
     servicedByAdminID VARCHAR(100),
-    itemID INT(4),
-    
-    PRIMARY KEY (itemID),
+    itemID VARCHAR(4),
+    PRIMARY KEY (serviceID),
     FOREIGN KEY (itemID) REFERENCES Item(itemID),
     FOREIGN KEY (servicedByAdminID) REFERENCES Administrator(administratorID)
 );
 
 CREATE TABLE ServiceRequest (
-    requestID INT(20) NOT NULL AUTO_INCREMENT,
+    requestID INT NOT NULL AUTO_INCREMENT,
     requestDate DATE,
     createdByCustID VARCHAR(100),
     requestStatus VARCHAR(50),
@@ -70,9 +69,9 @@ CREATE TABLE ServiceRequest (
 );
 
 CREATE TABLE Payment (
-    paymentID INT(20) NOT NULL AUTO_INCREMENT,
+    paymentID INT NOT NULL AUTO_INCREMENT,
     paidByCustID VARCHAR(100),
-    paymentAmount INT(20),
+    paymentAmount INT,
     paymentDate DATE,
     PRIMARY KEY (paymentID),
 	CONSTRAINT payment_ibfk_1 FOREIGN KEY (paidByCustID)
@@ -81,11 +80,11 @@ CREATE TABLE Payment (
 
 
 CREATE TABLE ServiceFee (
-    requestID INT(20),
-    serviceFeeAmount INT(4),
+    requestID INT,
+    serviceFeeAmount INT,
     creationDate DATE,
     settlementDate DATE,
-    settledByPaymentID INT(20),
+    settledByPaymentID INT,
     PRIMARY KEY (requestID, serviceFeeAmount),
     FOREIGN KEY (settledByPaymentID)
         REFERENCES Payment (paymentID),
@@ -94,7 +93,7 @@ CREATE TABLE ServiceFee (
 
 
 CREATE TABLE Cancels (
-	requestID INT(20),
+	requestID INT,
     cancellationDate DATE,
     cancelledByCustID VARCHAR(100),
     PRIMARY KEY (cancelledByCustID),
@@ -104,17 +103,18 @@ CREATE TABLE Cancels (
 
 
 CREATE TABLE Buys (
-	itemID INT(4) NOT NULL,
+	itemID VARCHAR(4) NOT NULL,
 	purchasedByCustID VARCHAR(100),
 	purchaseDate DATE,
     PRIMARY KEY (itemID),
-	FOREIGN KEY (puchasedByCustID) REFERENCES Customer(customerID)
+    FOREIGN KEY (itemID) REFERENCES Item(itemID),
+	FOREIGN KEY (purchasedByCustID) REFERENCES Customer(customerID)
 );
 
 
 CREATE TABLE Approves (
 	approvedByAdminID VARCHAR(100),
-    requestID INT(20),
+    requestID INT,
     approvalDate DATE,
     PRIMARY KEY (requestID),
     FOREIGN KEY (approvedByAdminID)

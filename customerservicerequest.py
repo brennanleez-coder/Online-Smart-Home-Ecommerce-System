@@ -1,7 +1,10 @@
 from datetime import date
 from tkinter.constants import W
 from datetime import timedelta
-
+from tkinter import messagebox
+from tkinter import *
+import os
+import mysql.connector
 
 def customerMakesServiceRequest(itemID, itemInfo):
     sql = "SELECT itemID, purchaseDate FROM Buys WHERE itemID = %s"
@@ -10,7 +13,7 @@ def customerMakesServiceRequest(itemID, itemInfo):
     mydb.commit()
     myresult = mycursor.fetchall()
     retrievedItemID = myresult[0]
-    retrievedPurchaseDate = myresult[1] // #dd/mm/yyyy
+    retrievedPurchaseDate = myresult[1]  ##dd/mm/yyyy
 
     model = itemInfo['model']
     category = itemInfo['Category']
@@ -32,7 +35,7 @@ def customerMakesServiceRequest(itemID, itemInfo):
     warrantyEndDate = retrievedPurchaseDate + timedelta(weeks=warrantyInWeeks)
 
     #request date
-    now = date.today().strftime("%d/%m/%Y") 
+    now = date.today().strftime("%y/%m/%d")
 
     if now <= warrantyEndDate:
         requestStatus = "Submitted"
@@ -62,10 +65,10 @@ def customerMakesServiceRequest(itemID, itemInfo):
 
 
     
-    sql3 = "UPDATE Item SET serviceStatus = %s"
-    val3 = ["Waiting for approval"]
-    mycursor.execute(sql2,val2)
-    mydb.commmit()
+        sql3 = "UPDATE Item SET serviceStatus = %s"
+        val3 = ["Waiting for approval"]
+        mycursor.execute(sql2,val2)
+        mydb.commmit()
 
 
 

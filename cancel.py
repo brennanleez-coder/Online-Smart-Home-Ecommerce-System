@@ -39,7 +39,7 @@ def systemCancels(requestID, customerID):
     sDate = mycursor.fetchall()
 
     today = date.today()
-    now = today.strftime("%d/%m/%Y")
+    now = today.strftime("%y/%m/%d")
 
     if sDate == "":
         if now > rDate + timedelta(days = 10):
@@ -62,7 +62,7 @@ def custCancels(requestID, customerID):
     rStatus = mycursor.fetchall()
 
     today = date.today()
-    now = today.strftime("%d/%m/%Y")
+    now = today.strftime("%y/%m/%d")
 
     if rStatus == "Submitted and Waiting for payment" or rStatus == "Submitted" :
         ## add in button to press cancel

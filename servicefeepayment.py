@@ -1,4 +1,6 @@
 from datetime import date
+import os
+import mysql.connector
 
 def calculateServiceFee(requestStatus, requestDate, itemCost, requestID):
 
