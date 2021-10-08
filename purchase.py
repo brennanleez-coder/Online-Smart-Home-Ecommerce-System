@@ -1,15 +1,18 @@
 from datetime import date
 from tkinter import messagebox
+from tkinter import *
+import os
+import mysql.connector
+# Designing window for registration
+ 
+mydb = mysql.connector.connect(user='root', password='password',
+                              host='localhost',
+                              database='OSHES')
 
-def purchase(itemID, model, color, factory, productionYear, powerSupply, customerid):
-    
-    #getItemID
-    #sql1 = "SELECT itemID FROM Item WHERE color = %s AND factory = %s AND powerSupply = %s productionYear = %s AND purchaseStatus = "SOLD" ORDER BY RAND() LIMIT 1"
-    #val1 = [color, factory, powerSupply, productionYear]
-    #mydb.commit()
-    #mycursor.execute(sql1,val1)
-    #itemIDAvailable = mycursor.fetchall()
-   
+mycursor = mydb.cursor()
+
+def purchase(itemID, model, color, factory, productionYear, powerSupply, customerID):
+
     sql = "SELECT productID FROM Product WHERE model = %s"
     val = [model]
     mycursor.execute(sql,val)
