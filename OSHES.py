@@ -97,7 +97,7 @@ def registerCustomer():
     Button(register_screen, text="Register", width=10, height=1, bg="blue", command = register_customer).pack()
 
 
-def registerAdministrator():
+""" def registerAdministrator():
     global register_screen
     register_screen = Toplevel(main_screen)
     register_screen.title("Register")
@@ -166,7 +166,7 @@ def registerAdministrator():
 
     Label(register_screen, text="").pack()
     Button(register_screen, text="Register", width=10, height=1, bg="blue", command = register_admin).pack()
- 
+  """
  
 # Designing window for login 
  
@@ -252,7 +252,7 @@ def register_customer():
  
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()# Implementing event on register button
  
-def register_admin():
+""" def register_admin():
  
     adminID_info = adminID.get()
     password2_info = password2.get()
@@ -274,7 +274,7 @@ def register_admin():
     phoneNumber_entry.delete(0, END)
  
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()
- 
+  """
 # Implementing event on login button 
  
 def customerlogin_verify():
