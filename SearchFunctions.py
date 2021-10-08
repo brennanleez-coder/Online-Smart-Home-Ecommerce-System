@@ -34,7 +34,7 @@ def simpleSearchScreen():
     catModel = StringVar()
     global catModelInput
 
-    Label(simpleSearch_screen, text="Category/Model * (Eg. Lights or Lights1").pack()
+    Label(simpleSearch_screen, text="Category/Model * (Eg. Lights / Lights1)").pack()
     catModelInput = Entry(simpleSearch_screen, textvariable=catModel)
     catModelInput.pack()
     
@@ -106,7 +106,7 @@ def advancedSearchScreen():
     global advancedSearch_screen
     advancedSearch_screen = Toplevel()
     advancedSearch_screen.title("Advanced Search")
-    advancedSearch_screen.geometry("400x550")
+    advancedSearch_screen.geometry("500x550")
     Label(advancedSearch_screen, text="Filter by:").pack()
  
     catModel = StringVar()
@@ -116,15 +116,15 @@ def advancedSearchScreen():
     powerSupply = StringVar()
     global catModelInput, colorInput, factoryInput, prodYearInput, powerSupplyInput
 
-    Label(advancedSearch_screen, text="Category/Model * (Eg. Lights/Lights1").pack()
+    Label(advancedSearch_screen, text="Category/Model * (Eg. Lights/Lights1)").pack()
     catModelInput = Entry(advancedSearch_screen, textvariable=catModel)
     catModelInput.pack()
 
-    Label(advancedSearch_screen, text="Color (Whit, Blue, Yellow, Green, Black").pack()
+    Label(advancedSearch_screen, text="Color (White / Blue / Yellow / Green / Black)").pack()
     colorInput = Entry(advancedSearch_screen, textvariable=color)
     colorInput.pack()
 
-    Label(advancedSearch_screen, text="Factory (Malaysia, China, Philippines").pack()
+    Label(advancedSearch_screen, text="Factory (Malaysia / China / Philippines)").pack()
     factoryInput = Entry(advancedSearch_screen, textvariable=factory)
     factoryInput.pack()
 
@@ -132,7 +132,7 @@ def advancedSearchScreen():
     prodYearInput = Entry(advancedSearch_screen, textvariable=prodYear)
     prodYearInput.pack()
 
-    Label(advancedSearch_screen, text="Power Supply (USB, Battery").pack()
+    Label(advancedSearch_screen, text="Power Supply (USB / Battery)").pack()
     powerSupplyInput = Entry(advancedSearch_screen, textvariable=powerSupply)
     powerSupplyInput.pack()
     
