@@ -50,7 +50,7 @@ def registerCustomer():
     Label(register_screen, text="Please enter details below", bg="white").pack()
     Label(register_screen, text="").pack()
 
-    customerID_lable = Label(register_screen, text="customerID * ")
+    customerID_lable = Label(register_screen, text="customerID * (ENTER DIGITS ONLY) ")
     customerID_lable.pack()
     customerID_entry = Entry(register_screen, textvariable=customerID)
     customerID_entry.pack()
@@ -188,7 +188,7 @@ def loginCustomer():
     global customerID_login_entry
     global password1_login_entry
  
-    Label(login_screen, text="customerID * ").pack()
+    Label(login_screen, text="customerID * (ENTER DIGITS ONLY)").pack()
     customerID_login_entry = Entry(login_screen, textvariable=customerID_verify)
     customerID_login_entry.pack()
     Label(login_screen, text="").pack()
