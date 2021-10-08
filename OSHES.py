@@ -4,6 +4,7 @@
 from tkinter import *
 import os
 import mysql.connector
+from CustomerView import customerview
 # Designing window for registration
  
 mydb = mysql.connector.connect(user='root', password='password',
@@ -329,7 +330,7 @@ def login_sucess():
     login_success_screen.title("Success")
     login_success_screen.geometry("150x100")
     Label(login_success_screen, text="Login Success").pack()
-    Button(login_success_screen, text="OK", command=delete_login_success).pack()
+    Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview()]).pack()
  
 # Designing popup for login invalid password
  
