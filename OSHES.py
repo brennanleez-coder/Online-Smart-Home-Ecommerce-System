@@ -211,7 +211,7 @@ def loginAdmin():
     adminID_verify = StringVar()
     password2_verify = StringVar()
  
-    global username2_login_entry
+    global adminID_login_entry
     global password2_login_entry
  
     Label(login_screen, text="adminID * ").pack()
@@ -286,12 +286,12 @@ def customerlogin_verify():
     sql = ("SELECT customerID , password FROM Customer WHERE customerID = %s AND password = %s")
     val = (customerUsername, customerPassword)
     mycursor.execute(sql, val)
-    mydb.commit()
+    #mydb.commit()
     myresult = mycursor.fetchall()
 
 
-    if myresult[0] == customerUsername:
-        if myresult[1] == customerPassword:
+    if myresult[0][0] == customerUsername:
+        if myresult[0][1] == customerPassword:
             login_sucess()
         else:
             password_not_recognised()
@@ -306,15 +306,14 @@ def adminlogin_verify():
     password2_login_entry.delete(0, END)
  
 
-    sql = ("SELECT administratorID , password FROM Admin WHERE administatorID = %s AND password = %s")
+    sql = ("SELECT administratorID , password FROM Administrator WHERE administratorID = %s AND password = %s")
     val = (adminUsername, adminPassword)
     mycursor.execute(sql, val)
-    mydb.commit()
+    #mydb.commit()
     myresult = mycursor.fetchall()
 
-
-    if myresult[0] == adminUsername:
-        if myresult[1] == adminPassword:
+    if myresult[0][0] == adminUsername:
+        if myresult[0][1] == adminPassword:
             login_sucess()
         else:
             password_not_recognised()
@@ -337,7 +336,7 @@ def login_sucess():
 def password_not_recognised():
     global password_not_recog_screen
     password_not_recog_screen = Toplevel(login_screen)
-    password_not_recog_screen.title("Success")
+    password_not_recog_screen.title("Error")
     password_not_recog_screen.geometry("150x100")
     Label(password_not_recog_screen, text="Invalid Password ").pack()
     Button(password_not_recog_screen, text="OK", command=delete_password_not_recognised).pack()
@@ -347,7 +346,7 @@ def password_not_recognised():
 def user_not_found():
     global user_not_found_screen
     user_not_found_screen = Toplevel(login_screen)
-    user_not_found_screen.title("Success")
+    user_not_found_screen.title("Error")
     user_not_found_screen.geometry("150x100")
     Label(user_not_found_screen, text="User Not Found").pack()
     Button(user_not_found_screen, text="OK", command=delete_user_not_found_screen).pack()
