@@ -29,6 +29,10 @@ def simpleSearchScreen():
     simpleSearch_screen = Toplevel()
     simpleSearch_screen.title("Simple Search")
     simpleSearch_screen.geometry("300x350")
+    img = PhotoImage(file="img/cart.png")
+    label = Label(simpleSearch_screen,image=img)
+    label.place(x=0, y=0)
+
     Label(simpleSearch_screen, text="Filter by:").pack()
  
     catModel = StringVar()

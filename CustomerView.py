@@ -130,11 +130,26 @@ def customerview():
     global customer
     customer=Tk()
     customer.title("Customer View")
-    customer.geometry("300x250")
+    customer.geometry("500x600")
     customer.resizable(False, False)
-    Label(customer,text="What would you like to do?",bg='green',width="300",height="1",font=("Calibri",16)).pack()
-    Button(customer,text="Search Products",height="2",width="30",command=searchScreen).pack(pady=30)
-    Button(customer,text="View Purchased Products",height="2",width="30",command=view_products).pack(pady=30)
+
+
+    img = PhotoImage(file="img/girl.png")
+    label = Label(customer,image=img)
+    label.place(x=0, y=0)
+
+    Label(customer,text="Hi Customer,",fg='White', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack(anchor=NE)
+    Label(customer,text="What would you like to do?",fg='White', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack()
+
+    searchButton = Button(customer,text="Search Products",height="2",width="30",command=searchScreen)
+    searchButton.place(relx=0.2,rely=0.45)
+
+    viewButton = Button(customer,text="View Purchased Products",height="2",width="30",command=view_products)
+    viewButton.place(relx=0.2,rely=0.55)
+
+    addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
+    addInfo.place(relx=0.7,rely=0.9)
+
     customer.mainloop()
     
 
