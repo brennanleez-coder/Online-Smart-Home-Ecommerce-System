@@ -17,7 +17,9 @@ def registerCustomer():
     global register_screen
     register_screen = Toplevel(main_screen)
     register_screen.title("Register")
-    register_screen.geometry("300x250")
+    register_screen.geometry("300x600")
+    register_screen.resizable(False, False)
+
  
     global customerID
     global fName
@@ -47,11 +49,14 @@ def registerCustomer():
     address = StringVar() 
 
  
-    Label(register_screen, text="Please enter details below", bg="white").pack()
+    Label(register_screen, text="REGISTRATION", bg="Maroon", width="300", height="3", font = "Helvetica 20 bold").pack()
     Label(register_screen, text="").pack()
 
-    customerID_lable = Label(register_screen, text="customerID * (ENTER DIGITS ONLY) ")
+    customerID_lable = Label(register_screen, text="customerID * ")
     customerID_lable.pack()
+    customerID_lable2 = Label(register_screen, text="(ENTER DIGITS ONLY)")
+    customerID_lable2.pack()
+
     customerID_entry = Entry(register_screen, textvariable=customerID)
     customerID_entry.pack()
 
@@ -91,7 +96,6 @@ def registerCustomer():
     address_entry = Entry(register_screen, textvariable=address)
     address_entry.pack()
 
-    
 
 
     Label(register_screen, text="").pack()
@@ -175,8 +179,10 @@ def loginCustomer():
     global login_screen
     login_screen = Toplevel(main_screen)
     login_screen.title("Login")
-    login_screen.geometry("300x250")
-    Label(login_screen, text="Please enter details below to login").pack()
+    login_screen.geometry("300x300")
+    login_screen.resizable(False, False)
+
+    Label(login_screen, text="LOGIN AS CUSTOMER", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
     Label(login_screen, text="").pack()
  
     global customerID_verify
@@ -188,9 +194,13 @@ def loginCustomer():
     global customerID_login_entry
     global password1_login_entry
  
-    Label(login_screen, text="customerID * (ENTER DIGITS ONLY)").pack()
+
+    Label(login_screen, text="customerID * ").pack()
+    Label(login_screen, text="(ENTER DIGITS ONLY)").pack()
+
     customerID_login_entry = Entry(login_screen, textvariable=customerID_verify)
     customerID_login_entry.pack()
+
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
     password1_login_entry = Entry(login_screen, textvariable=password1_verify, show= '*')
@@ -202,8 +212,10 @@ def loginAdmin():
     global login_screen
     login_screen = Toplevel(main_screen)
     login_screen.title("Login")
-    login_screen.geometry("300x250")
-    Label(login_screen, text="Please enter details below to login").pack()
+    login_screen.geometry("300x300")
+    login_screen.resizable(False, False)
+
+    Label(login_screen, text="LOGIN AS ADMIN", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
     Label(login_screen, text="").pack()
  
     global adminID_verify
@@ -329,6 +341,8 @@ def login_sucess():
     login_success_screen = Toplevel(login_screen)
     login_success_screen.title("Success")
     login_success_screen.geometry("150x100")
+    main_screen.resizable(False, False)
+
     Label(login_success_screen, text="Login Success").pack()
     Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview()]).pack()
  
@@ -349,6 +363,8 @@ def user_not_found():
     user_not_found_screen = Toplevel(login_screen)
     user_not_found_screen.title("Error")
     user_not_found_screen.geometry("150x100")
+    user_not_found_screen.resizable(False, False)
+
     Label(user_not_found_screen, text="User Not Found").pack()
     Button(user_not_found_screen, text="OK", command=delete_user_not_found_screen).pack()
  
@@ -373,18 +389,29 @@ def delete_user_not_found_screen():
 def main_account_screen():
     global main_screen
     main_screen = Tk()
-    main_screen.geometry("300x250")
+    main_screen.geometry("700x500")
     main_screen.title("Account Login")
-    Label(text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
-    Label(text="").pack()
-    Button(text="Customer Login", height="2", width="30", command = loginCustomer).pack()
-    Label(text="").pack()
-    Button(text="Customer Register", height="2", width="30", command=registerCustomer).pack()
-    Label(text="").pack()
-    Button(text="Administrator Login", height="2", width="30", command = loginAdmin).pack()
-    Label(text="").pack()
-    #Button(text="Administrator Register", height="2", width="30", command=registerAdministrator).pack()
+    main_screen.resizable(False, False)
+
+    img = PhotoImage(file="img/1.png")
+    label = Label(main_screen,image=img)
+    label.place(x=0, y=0)
+
+
+    Label(text="Online Smart Home Ecommerce System", bg="Maroon", width="300", height="3", font = "Helvetica 28 bold").pack()
+    custLogin = Button(text="Customer Login", height="2", width="30", command = loginCustomer)
+    custLogin.place(relx=0.28,rely=0.35)
+
+    custRegister = Button(text="Customer Register", height="2", width="30", command=registerCustomer)
+    custRegister.place(relx=0.28,rely=0.45)
+
+    adminLogin = Button(text="Administrator Login", height="2", width="30", command = loginAdmin)
+    adminLogin.place(relx=0.28,rely=0.55)
+
  
+    addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
+    addInfo.place(relx=0.7,rely=0.9)
+
     main_screen.mainloop()
  
 

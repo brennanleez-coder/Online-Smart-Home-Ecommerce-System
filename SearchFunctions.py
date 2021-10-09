@@ -34,7 +34,7 @@ def simpleSearchScreen():
     catModel = StringVar()
     global catModelInput
 
-    Label(simpleSearch_screen, text="Category/Model * (Eg. Lights / Lights1)").pack()
+    Label(simpleSearch_screen, text="Category/Model * (Eg. Lights / Light1)").pack()
     catModelInput = Entry(simpleSearch_screen, textvariable=catModel)
     catModelInput.pack()
     
@@ -116,7 +116,7 @@ def advancedSearchScreen():
     powerSupply = StringVar()
     global catModelInput, colorInput, factoryInput, prodYearInput, powerSupplyInput
 
-    Label(advancedSearch_screen, text="Category/Model * (Eg. Lights/Lights1)").pack()
+    Label(advancedSearch_screen, text="Category/Model * (Eg. Lights / Light1)").pack()
     catModelInput = Entry(advancedSearch_screen, textvariable=catModel)
     catModelInput.pack()
 
