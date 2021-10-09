@@ -119,6 +119,8 @@ def searchScreen():
     global search_screen
     search_screen = Tk()
     search_screen.geometry("300x350")
+    search_screen.resizable(False, False)
+
     search_screen.title("Search")
     Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack()
     Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
@@ -129,6 +131,7 @@ def customerview():
     customer=Tk()
     customer.title("Customer View")
     customer.geometry("300x250")
+    customer.resizable(False, False)
     Label(customer,text="What would you like to do?",bg='green',width="300",height="1",font=("Calibri",16)).pack()
     Button(customer,text="Search Products",height="2",width="30",command=searchScreen).pack(pady=30)
     Button(customer,text="View Purchased Products",height="2",width="30",command=view_products).pack(pady=30)

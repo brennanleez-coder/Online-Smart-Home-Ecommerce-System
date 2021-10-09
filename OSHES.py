@@ -49,7 +49,7 @@ def registerCustomer():
     address = StringVar() 
 
  
-    Label(register_screen, text="REGISTRATION", bg="Maroon", width="300", height="3", font = "Helvetica 20 bold").pack()
+    Label(register_screen, text="REGISTRATION", fg="White", bg="Maroon", width="300", height="3", font = "Helvetica 20 bold").pack()
     Label(register_screen, text="").pack()
 
     customerID_lable = Label(register_screen, text="customerID * ")
@@ -182,7 +182,7 @@ def loginCustomer():
     login_screen.geometry("300x300")
     login_screen.resizable(False, False)
 
-    Label(login_screen, text="LOGIN AS CUSTOMER", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
+    Label(login_screen, text="LOGIN AS CUSTOMER", fg="White", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
     Label(login_screen, text="").pack()
  
     global customerID_verify
@@ -215,7 +215,7 @@ def loginAdmin():
     login_screen.geometry("300x300")
     login_screen.resizable(False, False)
 
-    Label(login_screen, text="LOGIN AS ADMIN", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
+    Label(login_screen, text="LOGIN AS ADMIN", fg="White", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
     Label(login_screen, text="").pack()
  
     global adminID_verify
@@ -302,14 +302,18 @@ def customerlogin_verify():
     #mydb.commit()
     myresult = mycursor.fetchall()
 
+    if len(myresult) == 1:
+        login_sucess()
+    else:
+        user_not_found()
 
-    if myresult[0][0] == customerUsername:
+"""     if myresult[0][0] == customerUsername:
         if myresult[0][1] == customerPassword:
             login_sucess()
         else:
             password_not_recognised()
     else:
-        user_not_found()
+        user_not_found() """
  
 
 def adminlogin_verify():
@@ -318,20 +322,24 @@ def adminlogin_verify():
     adminID_login_entry.delete(0, END)
     password2_login_entry.delete(0, END)
  
-
     sql = ("SELECT administratorID , password FROM Administrator WHERE administratorID = %s AND password = %s")
     val = (adminUsername, adminPassword)
     mycursor.execute(sql, val)
     #mydb.commit()
     myresult = mycursor.fetchall()
 
-    if myresult[0][0] == adminUsername:
+    if len(myresult) == 1:
+        login_sucess()
+    else:
+        user_not_found()
+
+"""     if myresult[0][0] == adminUsername:
         if myresult[0][1] == adminPassword:
             login_sucess()
         else:
             password_not_recognised()
     else:
-        user_not_found()
+        user_not_found() """
 
 
 # Designing popup for login success
@@ -340,21 +348,12 @@ def login_sucess():
     global login_success_screen
     login_success_screen = Toplevel(login_screen)
     login_success_screen.title("Success")
-    login_success_screen.geometry("150x100")
+    login_success_screen.geometry("150x90")
     main_screen.resizable(False, False)
 
-    Label(login_success_screen, text="Login Success").pack()
+    Label(login_success_screen, text="Login Successfully!").pack(pady=10, padx=5)
     Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview()]).pack()
  
-# Designing popup for login invalid password
- 
-def password_not_recognised():
-    global password_not_recog_screen
-    password_not_recog_screen = Toplevel(login_screen)
-    password_not_recog_screen.title("Error")
-    password_not_recog_screen.geometry("150x100")
-    Label(password_not_recog_screen, text="Invalid Password ").pack()
-    Button(password_not_recog_screen, text="OK", command=delete_password_not_recognised).pack()
  
 # Designing popup for user not found
  
@@ -362,11 +361,12 @@ def user_not_found():
     global user_not_found_screen
     user_not_found_screen = Toplevel(login_screen)
     user_not_found_screen.title("Error")
-    user_not_found_screen.geometry("150x100")
+    login_success_screen.geometry("150x90")
     user_not_found_screen.resizable(False, False)
+    
 
-    Label(user_not_found_screen, text="User Not Found").pack()
-    Button(user_not_found_screen, text="OK", command=delete_user_not_found_screen).pack()
+    Label(user_not_found_screen, text="Wrong Username / Password!").pack(pady=10, padx=5)
+    Button(user_not_found_screen, text="OK", command=user_not_found_screen.destroy).pack()
  
 # Deleting popups
  
@@ -374,15 +374,7 @@ def delete_login_success():
     login_success_screen.destroy()
     login_screen.destroy()
     main_screen.destroy()
- 
- 
-def delete_password_not_recognised():
-    password_not_recog_screen.destroy()
- 
- 
-def delete_user_not_found_screen():
-    user_not_found_screen.destroy()
- 
+
  
 # Designing Main(first) window
  
@@ -398,7 +390,7 @@ def main_account_screen():
     label.place(x=0, y=0)
 
 
-    Label(text="Online Smart Home Ecommerce System", bg="Maroon", width="300", height="3", font = "Helvetica 28 bold").pack()
+    Label(text="Online Smart Home Ecommerce System", fg="White", bg="Maroon", width="300", height="3", font = "Helvetica 28 bold").pack()
     custLogin = Button(text="Customer Login", height="2", width="30", command = loginCustomer)
     custLogin.place(relx=0.28,rely=0.35)
 
