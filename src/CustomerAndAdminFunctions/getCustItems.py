@@ -24,13 +24,18 @@ def getCustItems(customerID):
         #this will be one tuple of (productID, color, powersupply, factory, productionYear)
         myresult1 = mycursor.fetchall()
 
+
         sql2 = "SELECT category, model FROM Product WHERE productID = %s"
         val2 = [myresult1[0][0]]
         mycursor.execute(sql2, val2)
         myresult2 = mycursor.fetchall()
 
+
+        #print("myresult2[0]:" + myresult2[0])
+
         #1 TUPLE of (category, model, productID, color, powersSupply, factory, productionYear)
-        result = myresult[0] + myresult2[0] + myresult1[0][1:]
+        result = myresult2[0] + myresult1[0]
+
         output.append(result)
 
     if len(output) == 0:

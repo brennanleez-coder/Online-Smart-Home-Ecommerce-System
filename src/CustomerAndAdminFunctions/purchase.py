@@ -11,31 +11,47 @@ mydb = mysql.connector.connect(user='root', password='password',
 
 mycursor = mydb.cursor()
 
-def purchase(itemID, model, color, factory, productionYear, powerSupply, customerID):
-    print(itemID, model, color, factory, productionYear, powerSupply, customerID)
+def purchase(itemID, category, model, colour, factory, productionYear, powerSupply, customerID):
+    print(itemID, model, colour, factory, productionYear, powerSupply, customerID)
 
-    """ sql = "SELECT productID FROM Product WHERE model = %s"
-    val = [model]
-    mycursor.execute(sql,val)
-    mydb.commit()
-    myresult = mycursor.fetchall()
+""" 
+    if category == "Lights":
+        if model == "Light1":
+            productID=1
+        elif model == "Light2":
+            productID=2
+        elif model == "SmartHome1":
+            productID=3
+    else:
+        if model == "SmartHome1":
+                productID=7
+        elif model == "Safe1":
+            productID=4
+        elif model == "Safe2":
+            productID=5
+        elif model == "Safe3":
+            productID=6
 
+    
 
     today = date.today()
     d1 = today.strftime("%y/%m/%d")
-    #populate buys
-    sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate, quantity) VALUES (%s, %s, %s, 1) "
-    val2 = [itemIDAvailable, customerID, d1]
-    mycursor.execute(sql1, val1)
-    mydb.commit() """
 
 
-    """ sql3 = "INSERT INTO Item (itemID, productID, servicedByAdminID, purchaseStatus, serviceStatus, color, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val3 = [itemID, myresult, "", "SOLD", "", color, powerSupply, factory, productionYear]
+
+    sql3 = "INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val3 = [itemID, productID, "SOLD", colour, powerSupply, factory, productionYear]
     mycursor.execute(sql3, val3)
+    mydb.commit() 
+    
+    #populate buys
+    sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate) VALUES (%s, %s, %s) "
+    val2 = [itemID, customerID, d1]
+    mycursor.execute(sql2, val2)
     mydb.commit() """
 
-    #################IMPORTANT######################
-    #STATEMENT TO UPDATE MONGODB DATABASE FOR ITEM
+
+
+  
     
 

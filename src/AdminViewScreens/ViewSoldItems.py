@@ -1,7 +1,7 @@
 from tkinter import *
 import os
 import mysql.connector
-from CustomerAndAdminFunctions.getSoldItems import getSoldItems
+#from CustomerAndAdminFunctions.getSoldItems.py import getSoldItems
 
 mydb = mysql.connector.connect(user='root', password='password',
                               host='localhost',

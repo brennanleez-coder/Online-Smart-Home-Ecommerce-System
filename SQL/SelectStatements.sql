@@ -26,7 +26,7 @@ INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, p
 INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123");
 INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123");
 
-
+INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES ("141", 12, "purchaseStatus", "colour", "powerSupply", "factory", "productionYear");
 
 
 

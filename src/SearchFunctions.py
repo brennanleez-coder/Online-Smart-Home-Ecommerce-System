@@ -291,7 +291,7 @@ def itemSearch(itemID):
 
 def checkout(groupItemData, selection):
     cart = []
-
+    print(userID)
     for i in selection:
         groupType = groupItemData[i]
         cartItem = groupType
@@ -308,6 +308,6 @@ def checkout(groupItemData, selection):
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
-        purchase(item.get("ItemID"), item.get("Model"), item.get("Color"), item.get("factory"), item.get("ProductionYear"), item.get("PowerSupply"), userID)
+        purchase(item.get("ItemID"), item.get("Category"), item.get("Model"), item.get("Color"), item.get("factory"), item.get("ProductionYear"), item.get("PowerSupply"), userID)
     
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
