@@ -17,21 +17,23 @@ def getSoldItems():
     approvedItems = []
     
     for i in allItems:
-
         sql1 = "SELECT requestID FROM Approves WHERE requestID = %s"
         val1 = [i[0]]
         mycursor.execute(sql1,val1)
         result = mycursor.fetchall()
-        approvedItems.append(result[0])
+
+        if len(result) > 0:
+            approvedItems.append(result[0])
 
     for i in allItems:
+        print(i)
         if i[0] in approvedItems[0]:
-            itemInfo = [approvedItems[0], "Approved"]
+            itemInfo = [i[0], "Approved"]
         else:
             itemInfo = [i[0], "Not Approved"]
         output.append(itemInfo)
 
     if len(output) == 0:
-            messagebox.showinfo(message="No items!")
+            messagebox.showinfo(message="Nothing Sold!")
     
     return output

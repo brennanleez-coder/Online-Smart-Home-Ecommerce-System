@@ -29,11 +29,7 @@ def viewSoldItemsScreen():
 
         # output is a list of tuples
         for items in output:
-            mylist.insert(END, "HI")
+            mylist.insert(END, "ItemID: " + str(items[0]) + ", " + items[1])
         
         mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
         scrollbar.config( command = mylist.yview )
-
-    # soldItems_screen.mainloop()
-
-# viewSoldItemsScreen()
