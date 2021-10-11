@@ -119,7 +119,7 @@ def view_products():
    
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
-def adminview():
+def adminview(adminID):
     global admin
     admin=Tk()
     admin.title("Admin View")

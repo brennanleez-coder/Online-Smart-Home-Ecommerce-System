@@ -103,6 +103,7 @@ def view_products(customerID):
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
     output = []
+    
     for i in myresult:
 
         sql1 = "SELECT productID, colour, powerSupply, factory, productionYear FROM Item WHERE itemID = %s"
@@ -127,13 +128,10 @@ def view_products(customerID):
         for items in output:
             mylist.insert(END, items[0] + " " + items[1] + " " + items[2] + " " + items[3] + " " + items[4] + " " + items[5] + " " + items[6])
     
-
     mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
     scrollbar.config( command = mylist.yview )
 
-
-    Button(viewProducts, width=10, height=1, text="View Item", command= lambda: viewSingleItem(customerID, mylist.curselection())).pack(pady=5)
-
+    Button(viewProducts, width=10, height=1, text="View Item", command= lambda: viewSingleItem(customerID, mylist.curselection())).pack(pady=10)
 
 
 def viewSingleItem(customerID, item):
@@ -148,7 +146,6 @@ def viewSingleItem(customerID, item):
     label.place(x=0, y=0) """
     
     Label(viewSingle,text="ITEM " + str(item[0]),fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack()
-
 
     Button(viewSingle, width=20, height=2, text="Request Service", command= lambda: requestService(customerID, item)).pack(pady=5)
     Button(viewSingle, width=20, height=2, text="Pay for Service", command= lambda: requestService(customerID, item)).pack()
@@ -188,7 +185,7 @@ def customerview(customerIDInput):
     Label(customer,text="Hi Customer,",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack(anchor=NE)
     Label(customer,text="What would you like to do?",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack()
 
-    searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen("C1"))
+    searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen(customerID))
     searchButton.place(relx=0.2,rely=0.45)
 
     viewButton = Button(customer,text="View Purchased Items",height="2",width="30",command=lambda: view_products(customerID))
@@ -200,8 +197,4 @@ def customerview(customerIDInput):
     customer.mainloop()
     
 
-customerview("1")
-#Advanced search
-#Add widgets here
-
-
+#customerview("1")

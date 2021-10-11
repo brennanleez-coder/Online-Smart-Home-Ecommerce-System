@@ -2,6 +2,7 @@
 #import modules
 from tkinter import *
 import os
+from tkinter import messagebox
 import mysql.connector
 from CustomerView import customerview
 from AdminView import adminview
@@ -48,7 +49,7 @@ def registerCustomer():
     address = StringVar() 
 
  
-    Label(register_screen, text="REGISTRATION", fg="White", bg="Maroon", width="300", height="3", font = "Helvetica 20 bold").pack()
+    Label(register_screen, text="REGISTRATION", fg="Gold", bg="Maroon", width="300", height="3", font = "Helvetica 20 bold").pack()
     Label(register_screen, text="").pack()
 
     customerID_lable = Label(register_screen, text="customerID * ")
@@ -98,9 +99,37 @@ def registerCustomer():
 
 
     Label(register_screen, text="").pack()
-    Button(register_screen, text="Register", width=10, height=1, command = register_customer).pack()
+    Button(register_screen, text="Register", width=10, height=1, command = lambda: [register_customer(), register_screen.destroy()]).pack()
 
  
+ 
+def register_customer():
+ 
+    customerID_info = customerID_entry.get()
+    password1_info = password1_entry.get()
+    gender_info = gender_entry.get()
+    emailAddress_info = emailAddress_entry.get()
+    phoneNumber_info = phoneNumber_entry.get()
+    address_info = address_entry.get()
+
+    #populate database
+    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
+    val = (customerID_entry.get(), fName_entry.get(), lName_entry.get(), gender_entry.get(), emailAddress_entry.get(), address_entry.get(), phoneNumber_entry.get(), password1_entry.get())
+    mycursor.execute(sql, val)
+    mydb.commit()
+
+    customerID_entry.delete(0, END)
+    fName_entry.delete(0, END)
+    lName_entry.delete(0, END)
+    password1_entry.delete(0, END)
+    gender_entry.delete(0, END)
+    emailAddress_entry.delete(0, END)
+    phoneNumber_entry.delete(0, END)
+    address_entry.delete(0, END) 
+ 
+    messagebox.showinfo(title="Registered!",message="Successful!")
+
+
 # Designing window for login 
  
 def loginCustomer():
@@ -166,36 +195,7 @@ def loginAdmin():
     Label(login_screen, text="").pack()
     Button(login_screen, text="Login", width=10, height=1, command = adminlogin_verify).pack()
  
-# Implementing event on register button
- 
-def register_customer():
- 
-    customerID_info = customerID_entry.get()
-    password1_info = password1_entry.get()
-    gender_info = gender_entry.get()
-    emailAddress_info = emailAddress_entry.get()
-    phoneNumber_info = phoneNumber_entry.get()
-    address_info = address_entry.get()
 
-    #populate database
-    sql = ("INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password)" "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ")
-    val = (customerID_entry.get(), fName_entry.get(), lName_entry.get(), gender_entry.get(), emailAddress_entry.get(), address_entry.get(), phoneNumber_entry.get(), password1_entry.get())
-    mycursor.execute(sql, val)
-    mydb.commit()
-
-    customerID_entry.delete(0, END)
-    fName_entry.delete(0, END)
-    lName_entry.delete(0, END)
-    password1_entry.delete(0, END)
-    gender_entry.delete(0, END)
-    emailAddress_entry.delete(0, END)
-    phoneNumber_entry.delete(0, END)
-    address_entry.delete(0, END) 
- 
-    Label(register_screen, text="Registration Success", fg="Gold", font=("calibri", 11)).pack()# Implementing event on register button
- 
-# Implementing event on login button 
- 
 def customerlogin_verify():
     customerUsername = customerID_verify.get()
     customerPassword = password1_verify.get()
@@ -245,7 +245,7 @@ def login_sucess(username):
     if username[0] == "C":
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview(username)]).pack()
     else:
-        Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), adminview()]).pack()
+        Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), adminview(username)]).pack()
 
 # Designing popup for user not found
  

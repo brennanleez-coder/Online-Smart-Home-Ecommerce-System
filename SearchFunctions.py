@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from tkinter import messagebox
 from tkinter import *
 import mysql.connector
+from CustomerAndAdminFunctions.purchase import purchase
 
 mydb = mysql.connector.connect(user='root', password='password',
                               host='localhost',
@@ -21,19 +22,21 @@ productsCol = mongoClient["products"]
 allCategories = ["Lights", "Locks"]
 allModels = ["Light1", "Light2", "SmartHome1", "Safe1", "Safe2", "Safe3"]
 
+userID = ''
 
-def searchScreen(user):
+def searchScreen(thisUserID):
     global search_screen
     search_screen = Tk()
     search_screen.geometry("300x350")
     search_screen.resizable(False, False)
     Label(search_screen,text="SEARCH",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
 
+    userID = thisUserID
 
     search_screen.title("Search")
     Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack()
     Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
-    if user[0] == "A":
+    if userID[0] == "A":
         Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack()
 
 
@@ -49,6 +52,7 @@ def simpleSearchScreen():
     label = Label(simpleSearch_screen,image=img)
     label.place(x=0, y=0)
 
+    Label(simpleSearch_screen, text="SIMPLE SEARCH", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
     Label(simpleSearch_screen, text="Filter by:").pack()
  
     catModel = StringVar()
@@ -70,7 +74,7 @@ def simpleSearch(catModel):
     simpleResults_screen.title("Simple Search")
     simpleResults_screen.geometry("500x600")
     simpleResults_screen.resizable(False, False)
-    Label(simpleResults_screen, text="Search Results").pack()
+    Label(simpleResults_screen, text="SEARCH RESULTS", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
 
     catModel = catModel.get()
 
@@ -127,6 +131,7 @@ def advancedSearchScreen():
     advancedSearch_screen = Toplevel()
     advancedSearch_screen.title("Advanced Search")
     advancedSearch_screen.geometry("500x550")
+    Label(advancedSearch_screen, text="ADVANCED SEARCH", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
     Label(advancedSearch_screen, text="Filter by:").pack()
  
     catModel = StringVar()
@@ -166,10 +171,10 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
     global advancedResults_screen
     advancedResults_screen = Tk()
     advancedResults_screen.title("Advanced Search")
-    advancedResults_screen.geometry("500x600")
+    advancedResults_screen.geometry("500x620")
     advancedResults_screen.resizable(False, False)
 
-    Label(advancedResults_screen, text="Search Results").pack()
+    Label(advancedResults_screen, text="SEARCH RESULTS", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
 
     catModel = catModel.get()
     color = color.get()
@@ -241,8 +246,11 @@ def itemSearchScreen():
     itemSearch_screen = Toplevel()
     itemSearch_screen.title("Item Search")
     itemSearch_screen.geometry("300x350")
-    Label(itemSearch_screen, text="Filter by:").pack()
- 
+    
+    Label(itemSearch_screen, text="ITEM SEARCH", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
+    Label(itemSearch_screen, text="Filter by:").pack() 
+
+
     itemID = StringVar()
     global itemIDInput
 
@@ -260,7 +268,7 @@ def itemSearch(itemID):
     itemSearchResults_screen = Tk()
     itemSearchResults_screen.title("Item Search")
     itemSearchResults_screen.geometry("400x400")
-    Label(itemSearchResults_screen, text="Search Results").pack()
+    Label(itemSearchResults_screen, text="SEARCH RESULTS", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
 
     itemID = itemID.get()
     query = {"ItemID": itemID}
@@ -296,100 +304,11 @@ def checkout(groupItemData, selection):
 
 
     for item in cart:
-
         # TO UPDATE UNSOLD -> SOLD IN MONGODB
         #print(item.get("ItemID"))
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
-        print()
-        purchase(item.itemID, item.model, item.color, item.factory, item.productionYear, item.powerSupply, customerID_verify)
-        # INSERT SQL CODE HERE
+        purchase(item.get("ItemID"), item.get("Model"), item.get("Color"), item.get("factory"), item.get("ProductionYear"), item.get("PowerSupply"), userID)
     
-
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
-    
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def purchase(itemID, model, color, factory, productionYear, powerSupply, customerID):
-
-    sql = "SELECT productID FROM Product WHERE model = %s"
-    val = [model]
-    mycursor.execute(sql,val)
-    mydb.commit()
-    myresult = mycursor.fetchall()
-
-
-    today = date.today()
-    d1 = today.strftime("%y/%m/%d")
-    #populate buys
-    sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate, quantity) VALUES (%s, %s, %s, 1) "
-    val2 = [itemID, customerID, d1]
-    mycursor.execute(sql2, val2)
-    mydb.commit()
-
-
-
-    
-
-    sql3 = "INSERT INTO Item (itemID, productID, servicedByAdminID, purchaseStatus, serviceStatus, color, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val3 = [itemID, myresult, "", "SOLD", "", color, powerSupply, factory, productionYear]
-    mycursor.execute(sql3, val3)
-    mydb.commit()
-
-#################IMPORTANT######################
-#STATEMENT TO UPDATE MONGODB DATABASE FOR ITEM
-
-
-    messagebox.showinfo("Hi customer", "Item successfully purchased")
-        # print(item)
