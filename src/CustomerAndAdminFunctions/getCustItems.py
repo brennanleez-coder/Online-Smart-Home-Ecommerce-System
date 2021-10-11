@@ -14,9 +14,9 @@ def getCustItems(customerID):
     val = [customerID]
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
-    output = [("Lights","Light1",2,"Black","USB","Malaysia","1964"),("Lights","Light1",2,"Black","USB","Malaysia","1964")]
+    output = [("1509", "Lights","Light1",2,"Black","USB","Malaysia","1964"),("141","Lights","Light1",2,"Black","USB","Malaysia","1964")]
     
-    for i in myresult:
+    """ for i in myresult:
 
         sql1 = "SELECT productID, colour, powerSupply, factory, productionYear FROM Item WHERE itemID = %s"
         val1 = [i[0]]
@@ -34,9 +34,9 @@ def getCustItems(customerID):
         #print("myresult2[0]:" + myresult2[0])
 
         #1 TUPLE of (category, model, productID, color, powersSupply, factory, productionYear)
-        result = myresult2[0] + myresult1[0]
+        #result = myresult[0] + myresult2[0] + myresult1[0]
 
-        output.append(result)
+        output.append(result) """
 
     print(output)
     if len(output) == 0:

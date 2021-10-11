@@ -12,9 +12,8 @@ mydb = mysql.connector.connect(user='root', password='password',
 mycursor = mydb.cursor()
 
 def purchase(itemID, category, model, colour, factory, productionYear, powerSupply, customerID):
-    print(itemID, model, colour, factory, productionYear, powerSupply, customerID)
+    
 
-""" 
     if category == "Lights":
         if model == "Light1":
             productID=1
@@ -48,8 +47,8 @@ def purchase(itemID, category, model, colour, factory, productionYear, powerSupp
     sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate) VALUES (%s, %s, %s) "
     val2 = [itemID, customerID, d1]
     mycursor.execute(sql2, val2)
-    mydb.commit() """
-
+    mydb.commit()
+    print(itemID, model, colour, factory, productionYear, powerSupply, customerID)
 
 
   

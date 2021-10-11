@@ -291,7 +291,8 @@ def itemSearch(itemID):
 
 def checkout(groupItemData, selection):
     cart = []
-    print(userID)
+    #print(userID)
+    print(selection)
     for i in selection:
         groupType = groupItemData[i]
         cartItem = groupType

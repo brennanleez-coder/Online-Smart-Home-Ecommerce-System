@@ -31,12 +31,12 @@ CREATE TABLE Item (
     factory VARCHAR(255),
     productionYear VARCHAR(50),
     colour VARCHAR(10),
-    productID INT UNIQUE NOT NULL,
+    productID INT NOT NULL,
     PRIMARY KEY (itemID)
 );
 
 CREATE TABLE Product (
-    productID INT UNIQUE NOT NULL,
+    productID INT NOT NULL,
     warranty INT,
     price INT,
     cost INT,
