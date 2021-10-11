@@ -177,6 +177,8 @@ def servicePayment(customerID, item):
     myresult = mycursor.fetchall()
     requestStatus = myresult[0]
 
+    print(requestStatus)
+
 
     if requestStatus == "Submitted and Waiting for payment":
         serviceFEE = 40 + 0.2*cost
@@ -222,8 +224,8 @@ def servicePayment(customerID, item):
                         message="Successful!")
 
     else:
-        messagebox.showinfo(title="Service Payment Unsuccessful",
-                        message="Unsuccessful!")
+        messagebox.showinfo(title="You do not have to pay for service fee",
+                        message="Good news!")
 
         #################UPDATE ITEM TABLE IF NEED###########################
 
