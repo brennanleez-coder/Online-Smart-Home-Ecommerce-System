@@ -42,7 +42,7 @@ INSERT INTO ServiceRequest (requestID, createdByCustID, requestStatus, requestDa
 INSERT INTO Payment (paymentID, paidByCustID, paymentDate, paymentAmount) VALUES (1, "1", "11/12/13", 157);
 INSERT INTO ServiceFee (requestID, serviceFeeAmount, settledByPaymentID, creationDate, settlementDate) VALUES (1, 101, 1, "11/11/12", "12/11/12");
 INSERT INTO Buys (itemID, purchasedByCustID,  purchaseDate) VALUES ("Item", "1", "11/12/13");
-INSERT INTO Approves (approvedByAdminID, requestID, approvalDate) VALUES ("2", 1, "11/12/13");
+INSERT INTO Approves (approvedByAdminID, requestID, approvalDate) VALUES ("A1", 1, "11/12/13");
 INSERT INTO Cancels (requestID, cancellationDate, cancelledByCustID) VALUES (1, "11/12/13", "1");
 
 

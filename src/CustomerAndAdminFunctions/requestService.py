@@ -3,8 +3,12 @@ from tkinter.constants import W
 from datetime import timedelta
 from tkinter import messagebox
 from tkinter import *
-import os
 import mysql.connector
+mydb = mysql.connector.connect(user='root', password='password',
+                              host='localhost',
+                              database='OSHES')
+
+mycursor = mydb.cursor()
 
 def customerMakesServiceRequest(itemID, itemInfo):
     sql = "SELECT itemID, purchaseDate FROM Buys WHERE itemID = %s"

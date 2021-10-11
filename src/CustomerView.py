@@ -1,13 +1,10 @@
 from tkinter import *
-import os
 import mysql.connector
 from typing import Type
 from pymongo.message import query
 from InitialiseMongoDB import initialiseMongoDB
 from tkinter import messagebox
-from datetime import date
 from tkinter.constants import W
-from datetime import timedelta
 from SearchFunctions import searchScreen
 from CustomerAndAdminFunctions.getCustItems import getCustItems
 

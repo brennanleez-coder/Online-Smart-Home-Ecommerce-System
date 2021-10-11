@@ -25,7 +25,7 @@ allModels = ["Light1", "Light2", "SmartHome1", "Safe1", "Safe2", "Safe3"]
 def searchScreen(thisUserID):
     global search_screen
     search_screen = Tk()
-    search_screen.geometry("300x350")
+    search_screen.geometry("300x280")
     search_screen.resizable(False, False)
     Label(search_screen,text="SEARCH",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
     
@@ -33,10 +33,10 @@ def searchScreen(thisUserID):
     userID = thisUserID
 
     search_screen.title("Search")
-    Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack()
+    Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack(pady=5)
     Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
     if userID[0] == "A":
-        Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack()
+        Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack(pady=5)
 
 
 # ------------------------------------------ SIMPLE SEARCH ------------------------------------------------------------------------------------
