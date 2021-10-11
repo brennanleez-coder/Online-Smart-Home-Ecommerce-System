@@ -9,8 +9,11 @@ from tkinter import messagebox
 from datetime import date
 from tkinter.constants import W
 from datetime import timedelta
-from SearchFunctions import searchScreen
 
+from SearchFunctions import searchScreen
+from AdminViewScreens.ViewSoldItems import viewSoldItemsScreen
+from AdminViewScreens.ViewUnpaidCust import viewUnpaidCustScreen
+from AdminViewScreens.ViewServiceitems import viewServiceItemsScreen
 
 def customerMakesServiceRequest(itemID, itemInfo):
     sql = "SELECT itemID, purchaseDate FROM Buys WHERE itemID = %s"
@@ -108,43 +111,47 @@ def view_products():
     view.title("Products Purchased")
     view.geometry("300x250")
     if lst_of_products==[]:
-        print("No items purchased")
+     print("No items purchased")
     else:
         for items in lst_of_products:
             Button(view,text=items[0]+' '+items[1],height="2",width="30",command=manageproducts).pack()
     
-
+   
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
+    
+def adminview():
+    global admin
+    admin=Tk()
+    admin.title("Admin View")
+    admin.geometry("500x600")
+    admin.resizable(False, False)
 
-def customerview():
-    global customer
-    customer=Tk()
-    customer.title("Customer View")
-    customer.geometry("500x600")
-    customer.resizable(False, False)
 
-
-    img = PhotoImage(file="img/girl.png")
-    label = Label(customer,image=img)
+    img = PhotoImage(file="img/2.png")
+    label = Label(admin,image=img)
     label.place(x=0, y=0)
 
-    Label(customer,text="Hi Customer,",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack(anchor=NE)
-    Label(customer,text="What would you like to do?",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack()
+    Label(admin,text="Hi Admin,",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack(anchor=NE)
+    Label(admin,text="What would you like to do?",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack()
 
-    searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen("Customer"))
-    searchButton.place(relx=0.2,rely=0.45)
+    searchButton = Button(admin,text="Search Items",height="2",width="30",command=lambda: searchScreen("Admin"))
+    searchButton.place(relx=0.2,rely=0.35)
 
-    viewButton = Button(customer,text="View Purchased Items",height="2",width="30",command=view_products)
-    viewButton.place(relx=0.2,rely=0.55)
+    viewSoldButton = Button(admin,text="View Sold Items",height="2",width="30",command=viewSoldItemsScreen)
+    viewSoldButton.place(relx=0.2,rely=0.45)
+
+    viewSvcButton = Button(admin,text="View Service Items",height="2",width="30",command=viewServiceItemsScreen)
+    viewSvcButton.place(relx=0.2,rely=0.55)
+
+    unpaidCustButton = Button(admin,text="View Unpaid Customers",height="2",width="30",command=viewUnpaidCustScreen)
+    unpaidCustButton.place(relx=0.2,rely=0.65)
 
     addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
     addInfo.place(relx=0.7,rely=0.9)
 
-    customer.mainloop()
+    admin.mainloop()
     
 
-#customerview()
-#Advanced search
-#Add widgets here
+#adminview()
 
 

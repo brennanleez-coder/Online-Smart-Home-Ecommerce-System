@@ -21,6 +21,22 @@ productsCol = mongoClient["products"]
 allCategories = ["Lights", "Locks"]
 allModels = ["Light1", "Light2", "SmartHome1", "Safe1", "Safe2", "Safe3"]
 
+
+def searchScreen(user):
+    global search_screen
+    search_screen = Tk()
+    search_screen.geometry("300x350")
+    search_screen.resizable(False, False)
+    Label(search_screen,text="SEARCH",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
+
+
+    search_screen.title("Search")
+    Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack()
+    Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
+    if user == "Admin":
+        Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack()
+
+
 # ------------------------------------------ SIMPLE SEARCH ------------------------------------------------------------------------------------
 
 def simpleSearchScreen():
@@ -305,25 +321,3 @@ def checkout(groupItemData, selection):
 
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
     
-
-# ------------------------------------------ test --------------------------------------------------------------------------------------------- 
-def searchScreen():
-    search_screen = Toplevel()
-    search_screen.geometry("300x250")
-    search_screen.title("Search")
-    Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack(pady=20)
-    Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
-    Button(search_screen, text="Item Search", height="2", width="30", command=itemSearchScreen).pack(pady=20)
-
-def main_account_screen():
-    global main_screen
-    main_screen = Tk()
-    main_screen.geometry("300x250")
-    main_screen.title("Start")
-
-    Button(text="Start", height="2", width="30", command = searchScreen).pack(pady=50)
-
-    main_screen.mainloop()
-
-# FOR TESTING ONLY
-#main_account_screen()
