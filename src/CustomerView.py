@@ -175,13 +175,12 @@ def servicePayment(customerID, item):
     val = [itemID]
     mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
-    requestStatus = myresult[0]
+    requestStatus = myresult[0][0]
 
     print(requestStatus)
 
-
-    if requestStatus == "('Submitted and Waiting for payment',)":
-        serviceFEE = 40 + 0.2*cost
+    if requestStatus == "Submitted and Waiting for payment":
+        serviceFEE = int(40 + 0.2*cost)
     else:
         serviceFEE = 0
     
