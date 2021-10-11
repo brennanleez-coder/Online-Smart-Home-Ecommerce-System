@@ -17,7 +17,7 @@ mydb = mysql.connector.connect(user='root', password='password',
 
 mycursor = mydb.cursor()
 
-customerID = ""
+
 
 def customerMakesServiceRequest(itemID, itemInfo):
     sql = "SELECT itemID, purchaseDate FROM Buys WHERE itemID = %s"
@@ -188,7 +188,7 @@ def customerview(customerIDInput):
     Label(customer,text="Hi Customer,",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack(anchor=NE)
     Label(customer,text="What would you like to do?",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 28 bold").pack()
 
-    searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen("Customer"))
+    searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen("C1"))
     searchButton.place(relx=0.2,rely=0.45)
 
     viewButton = Button(customer,text="View Purchased Items",height="2",width="30",command=lambda: view_products(customerID))
