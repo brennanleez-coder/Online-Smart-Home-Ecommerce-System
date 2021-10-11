@@ -207,7 +207,6 @@ def customerlogin_verify():
     mycursor.execute(sql, val)
     #mydb.commit()
     myresult = mycursor.fetchall()
-    print(myresult[0][0])
 
     if len(myresult) == 1:
         login_sucess(myresult[0][0])

@@ -22,15 +22,14 @@ productsCol = mongoClient["products"]
 allCategories = ["Lights", "Locks"]
 allModels = ["Light1", "Light2", "SmartHome1", "Safe1", "Safe2", "Safe3"]
 
-userID = ''
-
 def searchScreen(thisUserID):
     global search_screen
     search_screen = Tk()
     search_screen.geometry("300x350")
     search_screen.resizable(False, False)
     Label(search_screen,text="SEARCH",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
-
+    
+    global userID
     userID = thisUserID
 
     search_screen.title("Search")
