@@ -177,20 +177,18 @@ def servicePayment(customerID, item):
     myresult = mycursor.fetchall()
     requestStatus = myresult[0]
 
-    if requestStatus == "Submitted":
-        serviceFee = 0
-
-    if requestStatus == "":
-        serviceFee = 0
 
     if requestStatus == "Submitted and Waiting for payment":
-        serviceFee = 40 + 0.2*cost
+        serviceFEE = 40 + 0.2*cost
+    else:
+        serviceFEE = 0
     
 
     itemID = item[0]
     
-    if serviceFee != 0:
-        paymentAmount = serviceFee
+    print(serviceFEE)
+    if serviceFEE != 0:
+        paymentAmount = serviceFEE
         paymentDate = date.today().strftime("%y/%m/%d")
         
         sql2 = "INSERT INTO Payment (paidByCustID, paymentDate, paymentAmount) VALUES (%s, %s, %d)"
@@ -216,7 +214,7 @@ def servicePayment(customerID, item):
 
 
         sql6 = "INSERT INTO ServiceFee (serviceFeeAmount, settledByPaymentID, creationDate, settlementDate) VALUES (%d, %d, %s, %s)"
-        val6 = [serviceFee, paymentID, requestDate, paymentDate]
+        val6 = [serviceFEE, paymentID, requestDate, paymentDate]
         mycursor.execute(sql6,val6)
         mydb.commit()
 
@@ -294,8 +292,8 @@ def customerview(customerIDInput):
 
 
 ########################### utility methods#################
-def calculateServiceFee(customerID, item):
-    """ itemID = item[0]
+""" def calculateServiceFee(customerID, item):
+    itemID = item[0]
     model = item[1]
     category = item[2]
 
@@ -327,6 +325,7 @@ def calculateServiceFee(customerID, item):
         serviceFee = 0
 
     if requestStatus == "Submitted and Waiting for payment":
-        serviceFee = 40 + 0.2*cost """
+        serviceFee = 40 + 0.2*cost
 
     return serviceFee
+ """
