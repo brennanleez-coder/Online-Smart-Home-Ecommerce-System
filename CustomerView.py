@@ -143,7 +143,6 @@ def view_products(customerID):
         mycursor.execute(sql1,val1)
         #this will be one tuple of (productID, color, powersupply, factory, productionYear)
         myresult1 = mycursor.fetchall()
-        print("result1": )
 
         sql2 = "SELECT category, model FROM Product WHERE productID = %s"
         val2 = [myresult1[0][0]]

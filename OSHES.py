@@ -53,7 +53,7 @@ def registerCustomer():
 
     customerID_lable = Label(register_screen, text="customerID * ")
     customerID_lable.pack()
-    customerID_lable2 = Label(register_screen, text="(ENTER MAX 4 DIGITS ONLY)")
+    customerID_lable2 = Label(register_screen, text="FORMAT: CXXXX")
     customerID_lable2.pack()
 
     customerID_entry = Entry(register_screen, textvariable=customerID)
@@ -124,7 +124,7 @@ def loginCustomer():
  
 
     Label(login_screen, text="customerID * ").pack()
-    Label(login_screen, text="(ENTER DIGITS ONLY)").pack()
+    Label(login_screen, text="(CXXXX)").pack()
 
     customerID_login_entry = Entry(login_screen, textvariable=customerID_verify)
     customerID_login_entry.pack()
@@ -144,7 +144,7 @@ def loginAdmin():
     login_screen.resizable(False, False)
 
     Label(login_screen, text="LOGIN AS ADMIN", fg="Gold", bg="Maroon", width="300", height="3", font = "Helvetica 16 bold").pack()
-    Label(login_screen, text="").pack()
+
  
     global adminID_verify
     global password2_verify
@@ -156,6 +156,7 @@ def loginAdmin():
     global password2_login_entry
  
     Label(login_screen, text="adminID * ").pack()
+    Label(login_screen, text="(AXXXX)").pack()
     adminID_login_entry = Entry(login_screen, textvariable=adminID_verify)
     adminID_login_entry.pack()
     Label(login_screen, text="").pack()
@@ -206,9 +207,10 @@ def customerlogin_verify():
     mycursor.execute(sql, val)
     #mydb.commit()
     myresult = mycursor.fetchall()
+    print(myresult[0][0])
 
     if len(myresult) == 1:
-        login_sucess("customer", customerUsername)
+        login_sucess(myresult[0][0])
     else:
         user_not_found()
 
@@ -226,13 +228,13 @@ def adminlogin_verify():
     myresult = mycursor.fetchall()
 
     if len(myresult) == 1:
-        login_sucess("admin")
+        login_sucess(myresult[0][0])
     else:
         user_not_found()
 
 # Designing popup for login success
  
-def login_sucess(loginType, username):
+def login_sucess(username):
     global login_success_screen
     login_success_screen = Toplevel(login_screen)
     login_success_screen.title("Success")
@@ -240,7 +242,7 @@ def login_sucess(loginType, username):
     main_screen.resizable(False, False)
 
     Label(login_success_screen, text="Login Successfully!").pack(pady=10, padx=5)
-    if loginType == "customer":
+    if username[0] == "C":
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview(username)]).pack()
     else:
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), adminview()]).pack()

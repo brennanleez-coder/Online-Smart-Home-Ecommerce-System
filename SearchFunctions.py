@@ -33,7 +33,7 @@ def searchScreen(user):
     search_screen.title("Search")
     Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack()
     Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
-    if user == "Admin":
+    if user[0] == "A":
         Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack()
 
 
