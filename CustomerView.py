@@ -81,55 +81,22 @@ def customerMakesServiceRequest(itemID, itemInfo):
         mydb.commmit()
 
 
-
-def successfulsubmission():
-    global success
-    success=Toplevel(submit)
-    messagebox.showinfo(title="Service Request Submitted",message="Successful!")
-
-
-    
-    
-def submitservicerequest():
-    global submit
-    submit=Toplevel(view)
-    Button(submit,text="Confirm Submit",height="2",width="30",command=successfulsubmission).pack()
-    
-
-    
-    
-    #Need update to sql/MongoDB?
-    
-    
-def manageproducts(itemID):
-    manageProducts=Toplevel(viewProducts)
-    manageProducts.title("P")
-    manageProducts.geometry("400x400")
-    manageProducts.resizable(False, False)
-    
-    """ img = PhotoImage(file="img/locks.png")
-    label = Label(viewProducts,image=img)
-    label.place(x=0, y=0) """
-    
-    Button(manageProducts,text="Submit Service Request",height="2",width="30",command=submitservicerequest).pack()
-    Button(manageProducts,text="Pay Service Fees",height="2",width="30").pack()
-    Button(manageProducts,text="Cancel Service Request",height="2",width="30").pack()
-            
-
 def view_products(customerID):
     global viewProducts
     global options
     global clicked
     viewProducts=Toplevel()
     viewProducts.title("Products Purchased")
-    viewProducts.geometry("400x400")
+    viewProducts.geometry("500x600")
     viewProducts.resizable(False, False)
     
-    """ img = PhotoImage(file="img/lights.png")
-    label = Label(viewProducts,image=img)
-    label.place(x=0, y=0) """
 
-    Label(viewProducts,text="MY ITEMS",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 20 bold").pack()
+    Label(viewProducts,text="CUSTOMER " + customerID + " ITEMS",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack()
+
+    scrollbar = Scrollbar(viewProducts)
+    scrollbar.pack( side = RIGHT, fill = Y )
+    mylist = Listbox(viewProducts, yscrollcommand = scrollbar.set, selectmode="single")
+
 
     sql = "SELECT itemID from Buys WHERE purchasedByCustID = %s"
     val = [customerID]
@@ -143,26 +110,66 @@ def view_products(customerID):
         mycursor.execute(sql1,val1)
         #this will be one tuple of (productID, color, powersupply, factory, productionYear)
         myresult1 = mycursor.fetchall()
-        print("result1": )
 
         sql2 = "SELECT category, model FROM Product WHERE productID = %s"
         val2 = [myresult1[0][0]]
         mycursor.execute(sql2, val2)
         myresult2 = mycursor.fetchall()
-        #1 row of (category, model, productID, color, powersSupply, factory, productionYear)
-        result = myresult2 + myresult1[1:]
+
+        #1 TUPLE of (category, model, productID, color, powersSupply, factory, productionYear)
+        result = myresult[0] + myresult2[0] + myresult1[0][1:]
         output.append(result)
-        print(output)
 
-
-    print(output)
     if len(output) == 0:
-        print("nothin inside")
+            messagebox.showinfo(message="No items!")
     else:
+        # output is a list of tuples
         for items in output:
-            print(items)
-            Button(viewProducts,text=items[0][0],height="2",width="30",command=manageproducts).pack()
+            mylist.insert(END, items[0] + " " + items[1] + " " + items[2] + " " + items[3] + " " + items[4] + " " + items[5] + " " + items[6])
     
+
+    mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
+    scrollbar.config( command = mylist.yview )
+
+
+    Button(viewProducts, width=10, height=1, text="View Item", command= lambda: viewSingleItem(customerID, mylist.curselection())).pack(pady=5)
+
+
+
+def viewSingleItem(customerID, item):
+    global viewSingle
+    viewSingle=Toplevel(viewProducts)
+    viewSingle.title("ITEM " + str(item[0]))
+    viewSingle.geometry("350x240")
+    viewSingle.resizable(False, False)
+
+    """ img = PhotoImage(file="img/1.png")
+    label = Label(viewSingle,image=img)
+    label.place(x=0, y=0) """
+    
+    Label(viewSingle,text="ITEM " + str(item[0]),fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack()
+
+
+    Button(viewSingle, width=20, height=2, text="Request Service", command= lambda: requestService(customerID, item)).pack(pady=5)
+    Button(viewSingle, width=20, height=2, text="Pay for Service", command= lambda: requestService(customerID, item)).pack()
+    Button(viewSingle, width=20, height=2, text="Cancel Request", command= lambda: requestService(customerID, item)).pack(pady=5)
+
+def requestService(customerID, item):
+# LOGIC HERE
+    messagebox.showinfo(title="Service Request Submitted",message="Successful!")
+
+
+def servicePayment(customerID, item):
+# LOGIC HERE
+    messagebox.showinfo(title="Service Payment Submitted",message="Successful!")
+
+
+def cancelRequest(customerID, item):
+ # LOGIC HERE
+   messagebox.showinfo(title="Service Request Cancelled",message="Successful!")
+
+
+
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
 
 def customerview(customerIDInput):
@@ -193,7 +200,7 @@ def customerview(customerIDInput):
     customer.mainloop()
     
 
-#customerview("1")
+customerview("1")
 #Advanced search
 #Add widgets here
 
