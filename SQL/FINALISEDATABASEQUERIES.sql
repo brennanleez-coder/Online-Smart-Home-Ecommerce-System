@@ -33,7 +33,6 @@ CREATE TABLE Item (
     factory VARCHAR(255),
     productionYear VARCHAR(50),
     colour VARCHAR(10),
-    itemProductID INT UNIQUE NOT NULL,
     PRIMARY KEY (itemID)
 );
 
@@ -57,13 +56,15 @@ CREATE TABLE Services(
 
 CREATE TABLE ServiceRequest (
     requestID INT NOT NULL AUTO_INCREMENT,
+    itemID VARCHAR(4) NOT NULL,
     requestDate DATE,
     createdByCustID VARCHAR(100),
     requestStatus VARCHAR(50),
     
     PRIMARY KEY (requestID),
     FOREIGN KEY (createdByCustID)
-        REFERENCES Customer (customerID)
+	REFERENCES Customer (customerID),
+	FOREIGN KEY (itemID) REFERENCES Item (itemID)
 );
 
 CREATE TABLE Payment (
