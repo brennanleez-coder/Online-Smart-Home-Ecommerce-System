@@ -65,7 +65,7 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     global viewSingle
     viewSingle=Toplevel()
     #viewSingle.title("ITEM " + str(item[0]+1))
-    viewSingle.title("ITEM " + itemCursorSelection[0] + 1)
+    viewSingle.title("ITEM " + str(itemCursorSelection[0] + 1))
     viewSingle.geometry("350x240")
     viewSingle.resizable(False, False)
 
