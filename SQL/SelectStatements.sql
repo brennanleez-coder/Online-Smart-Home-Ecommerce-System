@@ -19,6 +19,16 @@ INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, p
 // administrator function
 SELECT itemID
 
+//fake accounts
+
+INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES ("123", "ADMIN","ADMIN","123","123","123");
+INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("1", "brennan","lee","male","123@gmail.com","TH","12341234","123");
+INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("2", "ryan","tan","male","123@gmail.com","SH","12341234","123");
+INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("3", "xinyen","tan","female","123@gmail.com","SH","12341234","123");
+
+
+
+
 
 
 

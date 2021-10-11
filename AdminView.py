@@ -77,7 +77,7 @@ def customerMakesServiceRequest(itemID, itemInfo):
         mydb.commmit()
 
 
-
+""" 
 def successfulsubmission():
     global success
     success=Toplevel(submit)
@@ -107,14 +107,14 @@ def view_products():
     global view
     global options
     global clicked
-    view=Toplevel(customer)
+    view=Toplevel()
     view.title("Products Purchased")
     view.geometry("300x250")
     if lst_of_products==[]:
      print("No items purchased")
     else:
         for items in lst_of_products:
-            Button(view,text=items[0]+' '+items[1],height="2",width="30",command=manageproducts).pack()
+            Button(view,text=items[0]+' '+items[1],height="2",width="30",command=manageproducts).pack() """
     
    
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 

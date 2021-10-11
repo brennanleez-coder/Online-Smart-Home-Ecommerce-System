@@ -1,14 +1,11 @@
 
 #import modules
- 
 from tkinter import *
 import os
 import mysql.connector
 from CustomerView import customerview
 from AdminView import adminview
 
-# Designing window for registration
- 
 mydb = mysql.connector.connect(user='root', password='password',
                               host='localhost',
                               database='OSHES')
@@ -56,7 +53,7 @@ def registerCustomer():
 
     customerID_lable = Label(register_screen, text="customerID * ")
     customerID_lable.pack()
-    customerID_lable2 = Label(register_screen, text="(ENTER DIGITS ONLY)")
+    customerID_lable2 = Label(register_screen, text="(ENTER MAX 4 DIGITS ONLY)")
     customerID_lable2.pack()
 
     customerID_entry = Entry(register_screen, textvariable=customerID)
@@ -211,7 +208,7 @@ def customerlogin_verify():
     myresult = mycursor.fetchall()
 
     if len(myresult) == 1:
-        login_sucess("customer")
+        login_sucess("customer", customerUsername)
     else:
         user_not_found()
 
@@ -235,7 +232,7 @@ def adminlogin_verify():
 
 # Designing popup for login success
  
-def login_sucess(loginType):
+def login_sucess(loginType, username):
     global login_success_screen
     login_success_screen = Toplevel(login_screen)
     login_success_screen.title("Success")
@@ -244,10 +241,9 @@ def login_sucess(loginType):
 
     Label(login_success_screen, text="Login Successfully!").pack(pady=10, padx=5)
     if loginType == "customer":
-        Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview()]).pack()
+        Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview(username)]).pack()
     else:
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), adminview()]).pack()
-
 
 # Designing popup for user not found
  

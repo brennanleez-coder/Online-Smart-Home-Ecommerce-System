@@ -302,22 +302,94 @@ def checkout(groupItemData, selection):
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
-
-
+        print()
+        purchase(item.itemID, item.model, item.color, item.factory, item.productionYear, item.powerSupply, customerID_verify)
         # INSERT SQL CODE HERE
-        # 
-        #         
-        # 
-        # 
-        # 
-        # 
-        # 
-        # 
-        # 
-        # 
-        # 
-        # 
-        # print(item)
+    
 
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
     
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def purchase(itemID, model, color, factory, productionYear, powerSupply, customerID):
+
+    sql = "SELECT productID FROM Product WHERE model = %s"
+    val = [model]
+    mycursor.execute(sql,val)
+    mydb.commit()
+    myresult = mycursor.fetchall()
+
+
+    today = date.today()
+    d1 = today.strftime("%y/%m/%d")
+    #populate buys
+    sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate, quantity) VALUES (%s, %s, %s, 1) "
+    val2 = [itemID, customerID, d1]
+    mycursor.execute(sql2, val2)
+    mydb.commit()
+
+
+
+    
+
+    sql3 = "INSERT INTO Item (itemID, productID, servicedByAdminID, purchaseStatus, serviceStatus, color, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val3 = [itemID, myresult, "", "SOLD", "", color, powerSupply, factory, productionYear]
+    mycursor.execute(sql3, val3)
+    mydb.commit()
+
+#################IMPORTANT######################
+#STATEMENT TO UPDATE MONGODB DATABASE FOR ITEM
+
+
+    messagebox.showinfo("Hi customer", "Item successfully purchased")
+        # print(item)

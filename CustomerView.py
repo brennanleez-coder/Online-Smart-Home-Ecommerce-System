@@ -11,6 +11,13 @@ from tkinter.constants import W
 from datetime import timedelta
 from SearchFunctions import searchScreen
 
+mydb = mysql.connector.connect(user='root', password='password',
+                              host='localhost',
+                              database='OSHES')
+
+mycursor = mydb.cursor()
+
+customerID = ""
 
 def customerMakesServiceRequest(itemID, itemInfo):
     sql = "SELECT itemID, purchaseDate FROM Buys WHERE itemID = %s"
@@ -94,35 +101,78 @@ def submitservicerequest():
     #Need update to sql/MongoDB?
     
     
-def manageproducts():
-    Button(view,text="Submit Service Request",height="2",width="30",command=submitservicerequest).pack()
-    Button(view,text="Pay Service Fees",height="2",width="30").pack()
-    Button(view,text="Cancel Service Request",height="2",width="30").pack()
+def manageproducts(itemID):
+    manageProducts=Toplevel(viewProducts)
+    manageProducts.title("P")
+    manageProducts.geometry("400x400")
+    manageProducts.resizable(False, False)
+    
+    """ img = PhotoImage(file="img/locks.png")
+    label = Label(viewProducts,image=img)
+    label.place(x=0, y=0) """
+    
+    Button(manageProducts,text="Submit Service Request",height="2",width="30",command=submitservicerequest).pack()
+    Button(manageProducts,text="Pay Service Fees",height="2",width="30").pack()
+    Button(manageProducts,text="Cancel Service Request",height="2",width="30").pack()
             
 
-def view_products():
-    global view
+def view_products(customerID):
+    global viewProducts
     global options
     global clicked
-    view=Toplevel(customer)
-    view.title("Products Purchased")
-    view.geometry("300x250")
-    if lst_of_products==[]:
-        print("No items purchased")
-    else:
-        for items in lst_of_products:
-            Button(view,text=items[0]+' '+items[1],height="2",width="30",command=manageproducts).pack()
+    viewProducts=Toplevel()
+    viewProducts.title("Products Purchased")
+    viewProducts.geometry("400x400")
+    viewProducts.resizable(False, False)
     
+    """ img = PhotoImage(file="img/lights.png")
+    label = Label(viewProducts,image=img)
+    label.place(x=0, y=0) """
 
+    Label(viewProducts,text="MY ITEMS",fg='Gold', bg='Maroon', width="300", height="2", font = "Helvetica 20 bold").pack()
+
+    sql = "SELECT itemID from Buys WHERE purchasedByCustID = %s"
+    val = [customerID]
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+    output = []
+    for i in myresult:
+
+        sql1 = "SELECT productID, colour, powerSupply, factory, productionYear FROM Item WHERE itemID = %s"
+        val1 = [i[0]]
+        mycursor.execute(sql1,val1)
+        #this will be one tuple of (productID, color, powersupply, factory, productionYear)
+        myresult1 = mycursor.fetchall()
+        print("result1": )
+
+        sql2 = "SELECT category, model FROM Product WHERE productID = %s"
+        val2 = [myresult1[0][0]]
+        mycursor.execute(sql2, val2)
+        myresult2 = mycursor.fetchall()
+        #1 row of (category, model, productID, color, powersSupply, factory, productionYear)
+        result = myresult2 + myresult1[1:]
+        output.append(result)
+        print(output)
+
+
+    print(output)
+    if len(output) == 0:
+        print("nothin inside")
+    else:
+        for items in output:
+            print(items)
+            Button(viewProducts,text=items[0][0],height="2",width="30",command=manageproducts).pack()
+    
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
 
-def customerview():
+def customerview(customerIDInput):
     global customer
     customer=Tk()
     customer.title("Customer View")
     customer.geometry("500x600")
     customer.resizable(False, False)
 
+    customerID = customerIDInput;
 
     img = PhotoImage(file="img/girl.png")
     label = Label(customer,image=img)
@@ -134,7 +184,7 @@ def customerview():
     searchButton = Button(customer,text="Search Items",height="2",width="30",command=lambda: searchScreen("Customer"))
     searchButton.place(relx=0.2,rely=0.45)
 
-    viewButton = Button(customer,text="View Purchased Items",height="2",width="30",command=view_products)
+    viewButton = Button(customer,text="View Purchased Items",height="2",width="30",command=lambda: view_products(customerID))
     viewButton.place(relx=0.2,rely=0.55)
 
     addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
@@ -143,7 +193,7 @@ def customerview():
     customer.mainloop()
     
 
-#customerview()
+#customerview("1")
 #Advanced search
 #Add widgets here
 
