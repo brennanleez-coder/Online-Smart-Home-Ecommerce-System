@@ -14,15 +14,19 @@ def getCustItems(customerID):
     val = [customerID]
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
+
     #output = [("1509", "Lights","Light1",2,"Black","USB","Malaysia","1964"),("141","Lights","Light1",2,"Black","USB","Malaysia","1964")]
-    outout = []
+    output = []
     for i in myresult:
 
         sql1 = "SELECT category, model, colour, powerSupply, factory, productionYear FROM Item WHERE itemID = %s"
         val1 = [i[0]]
         mycursor.execute(sql1,val1)
         #this will be one tuple of (productID, color, powersupply, factory, productionYear)
-        myresult = mycursor.fetchall()
+        myresult1 = mycursor.fetchall()
+        print(myresult1)
+        print(i[0])
+        myresult2 = (i[0],) + myresult1[0]
 
 
         """ sql2 = "SELECT category, model FROM Product WHERE productID = %s"
@@ -35,11 +39,11 @@ def getCustItems(customerID):
 
         #1 TUPLE of (category, model, productID, color, powersSupply, factory, productionYear)
         #result = myresult[0] + myresult2[0] + myresult1[0]
-        print(myresult)
+        print(myresult2)
+        output.append(myresult2)
         
-    output.append(result)
+    
 
-    print(output)
     if len(output) == 0:
             messagebox.showinfo(message="No items!")
     

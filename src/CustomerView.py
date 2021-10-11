@@ -18,7 +18,7 @@ mycursor = mydb.cursor()
 def view_products(customerID):
 
     output = getCustItems(customerID)
-
+    print(output)
     if len(output) != 0:    
         global viewProducts
         global options
@@ -41,8 +41,8 @@ def view_products(customerID):
         itemList = []
         ############################################
         for items in output:
-            mylist.insert(END, items[0] + " " + items[1] + " " + items[2] + " " + items[4] + " " + items[5] + " " + items[6] + " " + items[7])
-            itemInfo = (items[0], items[1], items[2], items[3], items[4], items[5], items[6], items[7])
+            mylist.insert(END, items[0] + " " + items[1] + " " + items[2] + " " + items[3] + " " + items[4] + " " + "FACTORY" + " " + items[6])
+            itemInfo = (items[0], items[1], items[2], items[3], items[4], items[5], items[6])
 
 
             ###########TEST########### REMOVE WHEN DONE
@@ -81,7 +81,7 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     Button(viewSingle, width=20, height=2, text="Cancel Request", command= lambda: cancelRequest(customerID, item)).pack(pady=5)
 
 def requestService(customerID, item):
-
+    print(item)
    
     model = item[1]
     category = item[2]
@@ -103,11 +103,13 @@ def requestService(customerID, item):
     sql1 = "SELECT purchaseDate from Buys WHERE itemID = %s"
     val1 = [item[0]]
     mycursor.execute(sql1,val1)
-    myresult1 = mycursor.fetchall()
+    myresult3 = mycursor.fetchall()
+    print(myresult3)
 
     
+    
     warrantyInWeeks = 4 * warranty
-    warrantyEndDate = myresult1[0][0] + timedelta(weeks=warrantyInWeeks)
+    warrantyEndDate = myresult3[0][0] + timedelta(weeks=warrantyInWeeks)
     print(warrantyEndDate)
     #request date
     now = date.today()
