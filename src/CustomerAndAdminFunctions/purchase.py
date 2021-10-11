@@ -37,11 +37,10 @@ def purchase(itemID, category, model, colour, factory, productionYear, powerSupp
     d1 = today.strftime("%y/%m/%d")
 
 
-
-    sql3 = "INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    val3 = [itemID, productID, "SOLD", colour, powerSupply, factory, productionYear]
+    sql3 = "INSERT INTO Item (itemID, category, model, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    val3 = [itemID, category, model, "SOLD", colour, powerSupply, factory, productionYear]
     mycursor.execute(sql3, val3)
-    mydb.commit() 
+    mydb.commit()
     
     #populate buys
     sql2 = "INSERT INTO Buys (itemID, purchasedByCustID, purchaseDate) VALUES (%s, %s, %s) "

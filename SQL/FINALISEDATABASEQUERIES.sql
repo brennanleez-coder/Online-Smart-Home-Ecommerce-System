@@ -26,25 +26,23 @@ CREATE TABLE Administrator (
 
 CREATE TABLE Item (
     itemID VARCHAR(4) NOT NULL,
+    model VARCHAR(10),
+    category VARCHAR(10),
     purchaseStatus VARCHAR(50),
     powerSupply VARCHAR(50),
     factory VARCHAR(255),
     productionYear VARCHAR(50),
     colour VARCHAR(10),
-    productID INT NOT NULL,
+    itemProductID INT UNIQUE NOT NULL,
     PRIMARY KEY (itemID)
 );
 
 CREATE TABLE Product (
-    productID INT NOT NULL,
+    productID INT UNIQUE NOT NULL,
     warranty INT,
     price INT,
     cost INT,
-    model VARCHAR(10),
-    category VARCHAR(10),
-    PRIMARY KEY (productID),
-	FOREIGN KEY (productID) REFERENCES Item(productID)
-    
+    PRIMARY KEY (productID)
 );
 
 CREATE TABLE Services(
