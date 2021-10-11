@@ -35,7 +35,7 @@ def view_products(customerID):
 
         # output is a list of tuples
         for items in output:
-            mylist.insert(END, items[0] + " " + items[1] + " " + items[2] + " " + items[3] + " " + items[4] + " " + items[5] + " " + items[6])
+            mylist.insert(END, items[0] + " " + items[1] + " " + items[3] + " " + items[4] + " " + items[5] + " " + items[6])
         
         mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
         scrollbar.config( command = mylist.yview )
@@ -46,7 +46,7 @@ def view_products(customerID):
 def viewSingleItem(customerID, item):
     global viewSingle
     viewSingle=Toplevel()
-    viewSingle.title("ITEM " + str(item[0]))
+    viewSingle.title("ITEM " + str(item[0]+1))
     viewSingle.geometry("350x240")
     viewSingle.resizable(False, False)
 
@@ -54,7 +54,7 @@ def viewSingleItem(customerID, item):
     label = Label(viewSingle,image=img)
     label.place(x=0, y=0) """
     
-    Label(viewSingle,text="ITEM " + str(item[0]),fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack()
+    Label(viewSingle,text="ITEM " + str(item[0]+10000),fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack()
 
     Button(viewSingle, width=20, height=2, text="Request Service", command= lambda: requestService(customerID, item)).pack(pady=5)
     Button(viewSingle, width=20, height=2, text="Pay for Service", command= lambda: servicePayment(customerID, item)).pack()

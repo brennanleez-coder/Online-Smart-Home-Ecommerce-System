@@ -14,7 +14,7 @@ def getCustItems(customerID):
     val = [customerID]
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
-    output = []
+    output = [("Lights","Light1",2,"Black","USB","Malaysia","1964"),("Lights","Light1",2,"Black","USB","Malaysia","1964")]
     
     for i in myresult:
 
@@ -38,6 +38,7 @@ def getCustItems(customerID):
 
         output.append(result)
 
+    print(output)
     if len(output) == 0:
             messagebox.showinfo(message="No items!")
     
