@@ -180,7 +180,7 @@ def servicePayment(customerID, item):
     print(requestStatus)
 
 
-    if requestStatus == "Submitted and Waiting for payment":
+    if requestStatus == "('Submitted and Waiting for payment',)":
         serviceFEE = 40 + 0.2*cost
     else:
         serviceFEE = 0
