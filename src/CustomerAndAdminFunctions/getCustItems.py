@@ -14,7 +14,7 @@ def getCustItems(customerID):
     val = [customerID]
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
-    output = [("1509", "Lights","Light1",2,"Black","USB","Malaysia","1964"),("141","Lights","Light1",2,"Black","USB","Malaysia","1964")]
+    output = [("1488", "Lights","Light1",2,"Black","USB","Malaysia","1964"),("141","Lights","Light1",2,"Black","USB","Malaysia","1964")]
     
     """ for i in myresult:
 

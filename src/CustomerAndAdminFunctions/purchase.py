@@ -38,8 +38,8 @@ def purchase(itemID, category, model, colour, factory, productionYear, powerSupp
 
 
 
-    sql3 = "INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    val3 = [itemID, productID, "SOLD", colour, powerSupply, factory, productionYear]
+    sql3 = "INSERT INTO Item (itemID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s)"
+    val3 = [itemID, "SOLD", colour, powerSupply, factory, productionYear]
     mycursor.execute(sql3, val3)
     mydb.commit() 
     
