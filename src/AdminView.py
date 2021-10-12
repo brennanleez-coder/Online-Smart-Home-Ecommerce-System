@@ -15,6 +15,36 @@ from AdminViewScreens.ViewSoldItems import viewSoldItemsScreen
 from AdminViewScreens.ViewUnpaidCust import viewUnpaidCustScreen
 from AdminViewScreens.ViewServiceItems import viewServiceItemsScreen
 
+mydb = mysql.connector.connect(user='root', password='password',
+                              host='localhost',
+                              database='OSHES')
+
+mycursor = mydb.cursor()
+
+def initialise():
+    
+
+    sql = "INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = ["A1", "ADMIN","ADMIN","123","123","123"]
+    mycursor.execute(sql,val)
+    mydb.commit()
+    
+    sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    val1 = [("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123"), ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123"), ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123")]
+    mycursor.executemany(sql1,va1)
+    mydb.commit()
+
+
+    sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%d, %d, %d, %d, %s,%s)"
+    val2 = [(1, 10, 50, 20, "Light1", "Lights"),
+        (2, 8, 60, 22, "Light2", "Lights"),
+        (3, 8, 70, 30, "Light3", "Lights"),
+        (4, 10, 100, 30, "SmartHome1", "Lights"),
+        (5, 10, 120, 50, "Safe1", "Locks"),
+        (6, 10, 125, 50, "Safe2", "Locks"),
+        (7, 12, 200, 100, "SmartHome1", "Locks"),
+        ]
+    mycursor.executemany(sql2,val2)
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
@@ -45,12 +75,23 @@ def adminview(adminID):
     unpaidCustButton = Button(admin,text="View Unpaid Customers",height="2",width="30",command=viewUnpaidCustScreen)
     unpaidCustButton.place(relx=0.2,rely=0.65)
 
+    initialisation = Button(admin,text="INITIALISATION",height="2",width="30",command=initialise())
+    initialisation.place(relx=0.2,rely=0.65)
+
+
     addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
     addInfo.place(relx=0.7,rely=0.9)
 
     admin.mainloop()
     
 
+
 #adminview()
+
+
+
+
+
+
 
 
