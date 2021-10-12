@@ -11,34 +11,14 @@ mydb = mysql.connector.connect(user='root', password='password',
 
 mycursor = mydb.cursor()
 
-def purchase(itemID, category, model, colour, factory, productionYear, powerSupply, customerID):
-    
-
-    if category == "Lights":
-        if model == "Light1":
-            productID=1
-        elif model == "Light2":
-            productID=2
-        elif model == "SmartHome1":
-            productID=3
-    else:
-        if model == "SmartHome1":
-                productID=7
-        elif model == "Safe1":
-            productID=4
-        elif model == "Safe2":
-            productID=5
-        elif model == "Safe3":
-            productID=6
-
-    
+def purchase(itemID, color, factory, productionYear, powerSupply, productID, customerID):
+    print(itemID, productID, color, factory, productionYear, powerSupply, customerID)
 
     today = date.today()
     d1 = today.strftime("%y/%m/%d")
 
-
-    sql3 = "INSERT INTO Item (itemID, category, model, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    val3 = [itemID, category, model, "SOLD", colour, powerSupply, factory, productionYear]
+    sql3 = "INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val3 = [itemID, productID, "SOLD", color, powerSupply, factory, productionYear]
     mycursor.execute(sql3, val3)
     mydb.commit()
     
@@ -47,9 +27,3 @@ def purchase(itemID, category, model, colour, factory, productionYear, powerSupp
     val2 = [itemID, customerID, d1]
     mycursor.execute(sql2, val2)
     mydb.commit()
-    print(itemID, model, colour, factory, productionYear, powerSupply, customerID)
-
-
-  
-    
-

@@ -27,8 +27,9 @@ def getSoldItems():
 
     for i in allItems:
         print(i)
-        if i[0] in approvedItems[0]:
-            itemInfo = [i[0], "Approved"]
+        if approvedItems != []:
+            if i[0] in approvedItems[0]:
+                itemInfo = [i[0], "Approved"]
         else:
             itemInfo = [i[0], "Not Approved"]
         output.append(itemInfo)

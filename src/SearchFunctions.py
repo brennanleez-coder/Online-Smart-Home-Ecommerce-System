@@ -46,7 +46,7 @@ def simpleSearchScreen():
     global simpleSearch_screen
     simpleSearch_screen = Toplevel()
     simpleSearch_screen.title("Simple Search")
-    simpleSearch_screen.geometry("300x350")
+    simpleSearch_screen.geometry("300x300")
     img = PhotoImage(file="img/cart.png")
     label = Label(simpleSearch_screen,image=img)
     label.place(x=0, y=0)
@@ -291,8 +291,7 @@ def itemSearch(itemID):
 
 def checkout(groupItemData, selection):
     cart = []
-    #print(userID)
-    print(selection)
+
     for i in selection:
         groupType = groupItemData[i]
         cartItem = groupType
@@ -309,6 +308,5 @@ def checkout(groupItemData, selection):
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
-        purchase(item.get("ItemID"), item.get("Category"), item.get("Model"), item.get("Color"), item.get("factory"), item.get("ProductionYear"), item.get("PowerSupply"), userID)
-    
+        purchase(item.get("ItemID"), item.get("Color"), item.get("Factory"), item.get("ProductionYear"), item.get("PowerSupply"), item.get("ProductID"), userID)    
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")

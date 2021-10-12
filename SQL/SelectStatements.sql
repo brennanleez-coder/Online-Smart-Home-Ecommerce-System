@@ -26,9 +26,15 @@ INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, p
 INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123");
 INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123");
 
-INSERT INTO Item (itemID, productID, purchaseStatus, colour, powerSupply, factory, productionYear) VALUES ("141", 2, "purchaseStatus", "colour", "powerSupply", "factory", "productionYear");
+// PRODUCT INITIALISATION
 
-
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (1, 10, 50, 20, "Light1", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (2, 8, 60, 22, "Light2", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (3, 8, 70, 30, "Light3", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (4, 10, 100, 30, "SmartHome1", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (5, 10, 120, 50, "Safe1", "Locks");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (6, 10, 125, 50, "Safe2", "Locks");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (7, 12, 200, 100, "SmartHome1", "Locks");
 
 //test cases
 
