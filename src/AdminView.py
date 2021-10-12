@@ -24,10 +24,6 @@ mycursor = mydb.cursor()
 def initialise():
     
 
-    sql = "INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s)"
-    val = ["A1", "ADMIN","ADMIN","123","123","123"]
-    mycursor.execute(sql,val)
-    mydb.commit()
     
     sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     val1 = [("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123"), ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123"), ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123")]
@@ -35,7 +31,7 @@ def initialise():
     mydb.commit()
 
 
-    sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%d, %d, %d, %d, %s,%s)"
+    sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%s, %s %s, %s, %s, %s)"
     val2 = [(1, 10, 50, 20, "Light1", "Lights"),
         (2, 8, 60, 22, "Light2", "Lights"),
         (3, 8, 70, 30, "Light3", "Lights"),

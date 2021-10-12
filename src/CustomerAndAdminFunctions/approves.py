@@ -30,3 +30,35 @@ def approves(requestID, administratorID):
     val2 = [administratorID, requestID, d1]
     mycursor.execute(sql2,val2)
     mydb.commit()
+
+
+
+
+    sql = "SELECT requestID from ServiceRequest"
+    mycursor.execute(sql)
+    allItems = mycursor.fetchall()
+    output = []
+    approvedItems = []
+    
+    for i in allItems:
+        sql1 = "SELECT requestID FROM Approves WHERE requestID = %s"
+        val1 = [i[0]]
+        mycursor.execute(sql1,val1)
+        result = mycursor.fetchall()
+
+        if len(result) > 0:
+            approvedItems.append(result[0])
+
+    for i in allItems:
+        print(i)
+        if approvedItems != []:
+            if i[0] in approvedItems[0]:
+                itemInfo = [i[0], "Approved"]
+        else:
+            itemInfo = [i[0], "Not Approved"]
+        output.append(itemInfo)
+
+    if len(output) == 0:
+            messagebox.showinfo(message="Nothing Sold!")
+    
+    return output
