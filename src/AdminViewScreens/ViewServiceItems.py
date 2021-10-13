@@ -2,6 +2,9 @@ from tkinter import *
 import os
 import mysql.connector
 from datetime import *
+from CustomerAndAdminFunctions.getSvcItems import getServiceItems
+from tkinter import messagebox
+
 
 mydb = mysql.connector.connect(user='root', password='password',
                               host='localhost',
@@ -10,44 +13,45 @@ mydb = mysql.connector.connect(user='root', password='password',
 mycursor = mydb.cursor()
 
 def viewServiceItemsScreen():
-    global unpaidCust_screen
-    unpaidCust_screen = Tk()
-    unpaidCust_screen.geometry("400x500")
-    unpaidCust_screen.resizable(False, False)
 
-    unpaidCust_screen.title("Unpaid Customers")
-    Label(unpaidCust_screen,text="CUSTOMERS WITH UNPAID ITEMS",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
-    # CAN LIST OUT ALL ITEMIDS THAT ARE SOLD. QUERY HERE.
+    output = getServiceItems()
 
+    if len(output) != 0:  
+        global svcItems_screen
+        svcItems_screen = Tk()
+        svcItems_screen.geometry("400x500")
+        svcItems_screen.resizable(False, False)
 
+        svcItems_screen.title("Service Items")
+        Label(svcItems_screen,text="SERVICE ITEMS",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
+        # CAN LIST OUT ALL ITEMIDS THAT ARE SOLD. QUERY HERE.
 
+        scrollbar = Scrollbar(svcItems_screen)
+        scrollbar.pack( side = RIGHT, fill = Y )
+        mylist = Listbox(svcItems_screen, yscrollcommand = scrollbar.set, selectmode="multiple")
 
-    ### RETURNS ALL THOSE WHO SUBMITTED SERVICE REQUEST THAT IS NOT APPROVED OR CANCELLED
-    # myresult (requestID, itemID, customerId, requestStatus, requestDate)
-    sql = "SELECT * FROM ServiceRequest WHERE requestStatus = %s OR requestStatus = %s OR requestStatus = %s"
-    val = ["Submitted", "In progress", "Approved"]
-    mycursor.execute(sql,val)
-    myresult = mycursor.fetchall()
+        # output is a list of tuples
+        for items in output:
+            mylist.insert(END, "RequestID: " + str(items[0]) + ", " + items[1])
+        
+        mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
+        scrollbar.config( command = mylist.yview )
 
-
-
-
-    ############ RYAN PLS MAKE LIST############
-
-    
-    Button(unpaidCust_screen, text="ApproveRequest", height="2", width="30", command ={approves(mylist.curselection(),myresult)}).pack()
-    Button(unpaidCust_screen, text="Complete Servicing", height="2", width="30", command ={completeServicing(mylist.curselection(),myresult)}).pack()
-    Button(unpaidCust_screen, text="Hi", height="2", width="30", command ={}).pack()
-    # soldItems_screen.mainloop()
+        
+        Button(svcItems_screen, text="ApproveRequest", height="2", width="30", command = lambda: approves(mylist.curselection(),output)).pack()
+        Button(svcItems_screen, text="Complete Servicing", height="2", width="30", command = lambda: completeServicing(mylist.curselection(),output)).pack()
+        # soldItems_screen.mainloop()
 
 # viewSoldItemsScreen()
 
 
-def approves(listOfItemsThatWantToBeApproved, serviceRequestTableInfo):
-
-    for i in listOfItemsThatWantToBeApproved:
-        requestID = serviceRequestTableInfo[0]
-        itemID = serviceRequestTableInfo[1]
+def approves(itemIndexes, itemInfo):
+    print(itemIndexes)
+    print(itemInfo)
+    for i in itemIndexes:
+        requestID = itemInfo[i][0]
+        print(requestID)
+        requestStatus = itemInfo[i][1]
 
         sql = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
         val = ["Approved", requestID]
@@ -62,19 +66,19 @@ def approves(listOfItemsThatWantToBeApproved, serviceRequestTableInfo):
         today = date.today()
         d1 = today.strftime("%y/%m/%d")
 
-        sql2 = "INSERT INTO Approves (approvedByAdminID, requestID, approvalDate) VALUES (%s, %d, %s)"
-        val2 = ["ADMIN", requestID, d1]
+        sql2 = "INSERT INTO Approves (approvedByAdminID, requestID, approvalDate) VALUES (%s, %s, %s)"
+        val2 = ["A1", requestID, d1]
         mycursor.execute(sql2,val2)
         mydb.commit()
 
         messagebox.showinfo(title="Approved Successful",
                         message="Item's service request successfully approved!")
 
-def completeServicing(listOfItemsThatWantToBeApproved, serviceRequestTableInfo):
+def completeServicing(itemIndexes, itemInfo):
 
-    for i in listOfItemsThatWantToBeApproved:
-        requestID = serviceRequestTableInfo[0]
-        itemID = serviceRequestTableInfo[1]
+    for i in itemIndexes:
+        requestID = itemInfo[i][0]
+        itemID = itemInfo[i][1]
 
         sql = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
         val = ["Completed", requestID]
@@ -87,4 +91,4 @@ def completeServicing(listOfItemsThatWantToBeApproved, serviceRequestTableInfo):
         mydb.commit()
 
         messagebox.showinfo(title="Servicing Successful",
-                        message="Items successfully serviced")
+                        message="Items successfully serviced.")

@@ -35,7 +35,7 @@ def searchScreen(thisUserID):
     search_screen.title("Search")
     Button(search_screen, text="Simple Search", height="2", width="30", command = simpleSearchScreen).pack(pady=5)
     Button(search_screen, text="Advanced Search", height="2", width="30", command = advancedSearchScreen).pack()
-    if userID[0] == "A":
+    if userID[0].upper() == "A":
         Button(search_screen, text="Item Search", height="2", width="30", command = itemSearchScreen).pack(pady=5)
 
 
@@ -115,7 +115,8 @@ def simpleSearch(catModel):
     mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
     scrollbar.config( command = mylist.yview )
 
-    Button(simpleResults_screen, width=10, height=1, text="Checkout", command= lambda: checkout(groupItemData, mylist.curselection())).pack()
+    if userID[0].lower() == "c":
+        Button(simpleResults_screen, width=10, height=1, text="Checkout", command= lambda: checkout(groupItemData, mylist.curselection())).pack()
     Button(simpleResults_screen, width=10, height=1, text="Close", command= simpleResults_screen.destroy).pack()
 
     catModelInput.delete(0, END)
@@ -226,7 +227,8 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
     mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
     scrollbar.config( command = mylist.yview )
 
-    Button(advancedResults_screen, width=10, height=1, text="Checkout", command= lambda: checkout(groupItemData, mylist.curselection())).pack()
+    if userID[0].lower() == "c":
+        Button(advancedResults_screen, width=10, height=1, text="Checkout", command= lambda: checkout(groupItemData, mylist.curselection())).pack()
     Button(advancedResults_screen, width=10, height=1, text="Close", command= advancedResults_screen.destroy).pack(pady=20)
 
     catModelInput.delete(0, END)
@@ -308,5 +310,6 @@ def checkout(groupItemData, selection):
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
+
         purchase(item.get("ItemID"), item.get("Color"), item.get("Factory"), item.get("ProductionYear"), item.get("PowerSupply"), item.get("ProductID"), userID)    
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")

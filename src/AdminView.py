@@ -21,26 +21,29 @@ mydb = mysql.connector.connect(user='root', password='password',
 
 mycursor = mydb.cursor()
 
-def initialise():
+def initialiseItemStatus():
     
+    mycursor.execute("CREATE TABLE itemStatus (pID VARCHAR(4) NOT NULL, soldItems INT , unsoldItems INT)")
+    mydb.commit()
+    
+    sql1 = "INSERT INTO itemStatus (pID, soldItems, unsoldItems) VALUES (%s, %s, %s)"
+    val1 = [("001", "90", "9"), ("002", "136", "163"), ("003", "29", "74"), ("004", "31","54"), ("005", "46", "99"), ("006", "50", "95"), ("007", "43", "82")]
+    mycursor.executemany(sql1, val1)
+    mydb.commit() 
 
-    
+    messagebox.showinfo(message="Initialised!")
+    """
     sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     val1 = [("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123"), ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123"), ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123")]
-    mycursor.executemany(sql1,va1)
+    mycursor.executemany(sql1,val1)x
     mydb.commit()
 
 
     sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%s, %s %s, %s, %s, %s)"
-    val2 = [(1, 10, 50, 20, "Light1", "Lights"),
-        (2, 8, 60, 22, "Light2", "Lights"),
-        (3, 8, 70, 30, "Light3", "Lights"),
-        (4, 10, 100, 30, "SmartHome1", "Lights"),
-        (5, 10, 120, 50, "Safe1", "Locks"),
-        (6, 10, 125, 50, "Safe2", "Locks"),
-        (7, 12, 200, 100, "SmartHome1", "Locks"),
-        ]
-    mycursor.executemany(sql2,val2)
+    val2 = ("1", "10", "50", "20", "Light1", "Lights")
+    mycursor.execute(sql2,val2)
+    mydb.commit()
+"""
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
@@ -71,8 +74,8 @@ def adminview(adminID):
     unpaidCustButton = Button(admin,text="View Unpaid Customers",height="2",width="30",command=viewUnpaidCustScreen)
     unpaidCustButton.place(relx=0.2,rely=0.65)
 
-    initialisation = Button(admin,text="INITIALISATION",height="2",width="30",command=initialise())
-    initialisation.place(relx=0.2,rely=0.65)
+    initialisation = Button(admin,text="INITIALISATION",height="2",width="30",command=initialiseItemStatus)
+    initialisation.place(relx=0.2,rely=0.75)
 
 
     addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")

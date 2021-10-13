@@ -10,31 +10,12 @@ mydb = mysql.connector.connect(user='root', password='password',
 mycursor = mydb.cursor()    
     
 def getSoldItems():
-    sql = "SELECT requestID from ServiceRequest"
-    mycursor.execute(sql)
-    allItems = mycursor.fetchall()
-    output = []
-    approvedItems = []
-    
-    for i in allItems:
-        sql1 = "SELECT requestID FROM Approves WHERE requestID = %s"
-        val1 = [i[0]]
-        mycursor.execute(sql1,val1)
-        result = mycursor.fetchall()
 
-        if len(result) > 0:
-            approvedItems.append(result[0])
+    """sql1 = "SELECT ProductID, COUNT(productID) FROM Buys LEFT JOIN Item ON productID = productID GROUP BY productID"
+    mycursor.execute(sql1)
+    result = mycursor.fetchall() """
 
-    for i in allItems:
-        print(i)
-        if approvedItems != []:
-            if i[0] in approvedItems[0]:
-                itemInfo = [i[0], "Approved"]
-        else:
-            itemInfo = [i[0], "Not Approved"]
-        output.append(itemInfo)
-
-    if len(output) == 0:
-            messagebox.showinfo(message="Nothing Sold!")
-    
-    return output
+    sql1 = "SELECT * FROM itemStatus"
+    mycursor.execute(sql1)
+    result = mycursor.fetchall()
+    return result

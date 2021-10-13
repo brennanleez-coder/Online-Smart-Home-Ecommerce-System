@@ -27,3 +27,18 @@ def purchase(itemID, color, factory, productionYear, powerSupply, productID, cus
     val2 = [itemID, customerID, d1]
     mycursor.execute(sql2, val2)
     mydb.commit()
+
+    sql1 = "SELECT * FROM itemStatus WHERE pID = %s "
+    val1 = [productID]
+    mycursor.execute(sql1, val1)
+    result = mycursor.fetchall()
+    soldCount = result[0][1]
+    unsoldCount = result[0][2]
+
+    unsoldCount -= 1
+    soldCount += 1
+
+    sql4 = "UPDATE itemStatus SET unsoldItems = %s, soldItems = %s WHERE pID = %s"
+    val4 = [unsoldCount, soldCount, productID]
+    mycursor.execute(sql4,val4)
+    mydb.commit()
