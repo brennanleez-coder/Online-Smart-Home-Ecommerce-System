@@ -334,6 +334,11 @@ def cancelRequest(item):
         print(mycursor)
         mydb.commit()
 
+        sql6 = "INSERT INTO Cancels WHERE requestID = %s"
+        val6 = [requestID]
+        mycursor.execute(sql6, val6)
+        mydb.commit()
+
         messagebox.showinfo(title="Service Request Cancelled",
                             message="Successful!")
 
