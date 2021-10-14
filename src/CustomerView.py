@@ -243,7 +243,7 @@ def servicePayment(customerID, item):
         # NO SERVICE FEE AT ALL.
 
         # GET REQUEST ID
-        sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
+        sql1 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
         val1 = [itemID]
         mycursor.execute(sql1, val1)
         myresult = mycursor.fetchall()
