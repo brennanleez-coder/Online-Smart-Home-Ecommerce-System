@@ -28,6 +28,8 @@ def purchase(itemID, color, factory, productionYear, powerSupply, productID, cus
     mycursor.execute(sql2, val2)
     mydb.commit()
 
+    print(itemID + "inserted into buys")
+
     sql1 = "SELECT * FROM itemStatus WHERE pID = %s "
     val1 = [productID]
     mycursor.execute(sql1, val1)

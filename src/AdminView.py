@@ -31,6 +31,12 @@ def initialiseItemStatus():
     mycursor.executemany(sql1, val1)
     mydb.commit() 
 
+    sql2 = "SELECT * FROM itemStatus"
+    mycursor.execute(sql2)
+    myresult2 = mycursor.fetchall()
+
+    product1 = myresult2[0][0] + "Unsold Items:" + myresult2[0][1] + "Sold items: " + myresult2[0][0] 
+
     messagebox.showinfo(message="Initialised!")
     """
     sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"

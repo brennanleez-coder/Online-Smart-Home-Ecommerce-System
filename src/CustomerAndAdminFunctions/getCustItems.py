@@ -10,12 +10,16 @@ mydb = mysql.connector.connect(user='root', password='password',
 mycursor = mydb.cursor()    
     
 def getCustItems(customerID):
+    mydb.commit()
     sql = "SELECT itemID from Buys WHERE purchasedByCustID = %s"
     val = [customerID]
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
     output = []
-    
+
+    print("displaying cust items:")
+    print(myresult)
+
     for i in myresult:
         sql1 = "SELECT productID, colour, powerSupply, factory, productionYear FROM Item WHERE itemID = %s"
         val1 = [i[0]]

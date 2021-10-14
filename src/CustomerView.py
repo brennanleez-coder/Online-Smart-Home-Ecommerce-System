@@ -43,7 +43,6 @@ def view_products(customerID):
             itemInfo = (items[0], items[1], items[2],
                         items[3], items[4], items[5], items[6])
 
-
         mylist.pack(fill=BOTH, expand=YES, padx=10, pady=10)
         scrollbar.config(command=mylist.yview)
 
@@ -61,8 +60,8 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     viewSingle.title("ITEM " + itemSelected[0])
     viewSingle.geometry("370x280")
     viewSingle.resizable(False, False)
-    
-    # GET REQUEST ID        
+
+    # GET REQUEST ID
     sql1 = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemSelected[0]]
     mycursor.execute(sql1, val1)
@@ -76,27 +75,28 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     if status == "Submitted and Waiting for payment":
         status = checkStatus(status, itemSelected[0])
 
-
     Label(viewSingle, text="ITEM " + itemSelected[0], fg='Gold',
           bg='Maroon', width="300", height="3", font="Helvetica 20 bold").pack()
 
-    Label(viewSingle, text="Request Status: " + status, fg='Grey'
-        , width="300", height="2", font="Helvetica 16").pack()
+    Label(viewSingle, text="Request Status: " + status, fg='Grey',
+          width="300", height="2", font="Helvetica 16").pack()
 
     Button(viewSingle, width=20, height=2, text="Request Service",
            command=lambda: [requestService(customerID, itemSelected), viewSingle.destroy()]).pack(pady=5)
 
-    if status == "Submitted and Waiting for payment" :       
+    if status == "Submitted and Waiting for payment":
         Button(viewSingle, width=20, height=2, text="Pay for Service",
-            command=lambda: [servicePayment(customerID, itemSelected), viewSingle.destroy()]).pack()
+               command=lambda: [servicePayment(customerID, itemSelected), viewSingle.destroy()]).pack()
 
-    if status == "In Progress" or status == "Submitted":       
+    if status == "In Progress" or status == "Submitted":
         Button(viewSingle, width=20, height=2, text="Cancel Request",
-           command=lambda: [cancelRequest(itemSelected), viewSingle.destroy()]).pack(pady=5)
-    
-###NEED TO UPDATE STATUS TO CANCELED IF SERVICE FEE NOT PAID IN 10 DAYS######
-def checkStatus(status, itemID):
+               command=lambda: [cancelRequest(itemSelected), viewSingle.destroy()]).pack(pady=5)
 
+###NEED TO UPDATE STATUS TO CANCELED IF SERVICE FEE NOT PAID IN 10 DAYS######
+
+
+def checkStatus(status, itemID):
+    mydb.commit()
     sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemID]
     mycursor.execute(sql1, val1)
@@ -109,23 +109,27 @@ def checkStatus(status, itemID):
 
     today = date.today()
     d1 = today.strftime("%y/%m/%d")
-    endDate = creationDate[0][0] + timedelta(days = 10)
+    endDate = creationDate[0][0] + timedelta(days=10)
 
     if endDate < today:
         sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
         val4 = ["Canceled"]
-        mycursor.execute(sql4,val4)
+        mycursor.execute(sql4, val4)
         mydb.commit()
-        print(" canclled le ")   
         return "Canceled"
-    else: 
-        print("else:" + status)   
+    else:
         return status
-        
-    
+
 
 def requestService(customerID, item):
     itemID = item[0]
+
+    """ sql11 = "SELECT requestStatus from ServiceRequest WHERE itemID = %s"
+    val11 = [itemID]
+    mycursor.execute(sql11, val11)
+    myresult3 = mycursor.fetchall()
+    requestStatus = myresult3[0][0] """
+
     model = item[1]
     category = item[2]
 
@@ -176,7 +180,6 @@ def requestService(customerID, item):
         mydb.commmit() """
 
 
- 
 # CREATION OF SERVICE FEE HERE.
     if model == "Light1":
         cost = 20
@@ -212,15 +215,13 @@ def requestService(customerID, item):
     requestDate = myresult[0][0]
     requestID = myresult[0][1]
 
-
     sql5 = "INSERT INTO ServiceFee (requestID, serviceFeeAmount, creationDate) VALUES (%s, %s, %s)"
     val5 = [requestID, serviceFEE, requestDate]
-    mycursor.execute(sql5,val5)
-    mydb.commit()    
+    mycursor.execute(sql5, val5)
+    mydb.commit()
 
     messagebox.showinfo(title="Service Request Submitted",
                         message="Successful!")
-
 
 
 def servicePayment(customerID, item):
@@ -234,66 +235,63 @@ def servicePayment(customerID, item):
 
     # NO REQUEST AT ALL.
     if myresult == []:
-        messagebox.showinfo(message="No request currently!")    
+        messagebox.showinfo(message="No request currently!")
     else:
         # NO SERVICE FEE AT ALL.
-  
-        # GET REQUEST ID        
+
+        # GET REQUEST ID
         sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
         val1 = [itemID]
         mycursor.execute(sql1, val1)
         myresult = mycursor.fetchall()
         requestID = myresult[0][0]
 
-        # QUERY FOR COST OF FEE 
+        # QUERY FOR COST OF FEE
         sql2 = "SELECT serviceFeeAmount FROM ServiceFee WHERE requestID = %s"
         val2 = [requestID]
         mycursor.execute(sql2, val2)
         myresult = mycursor.fetchall()
-        serviceFEE = myresult[0][0];
+        serviceFEE = myresult[0][0]
         print(serviceFEE)
 
         if serviceFEE == 0:
             messagebox.showinfo(title="Good news,",
-                        message="No payment required!")
+                                message="No payment required!")
         else:
             paymentDate = date.today().strftime("%y/%m/%d")
-            
+
             sql3 = "INSERT INTO Payment (paidByCustID, paymentDate, paymentAmount) VALUES (%s, %s, %s)"
             val3 = [customerID, paymentDate, serviceFEE]
-            mycursor.execute(sql3,val3)
+            mycursor.execute(sql3, val3)
             mydb.commit()
 
             sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
             val4 = ["In Progress"]
             mycursor.execute(sql4, val4)
-            mydb.commit()    
+            mydb.commit()
 
             sql5 = "SELECT paymentID FROM Payment WHERE paymentID=(SELECT max(paymentID) FROM Payment)"
             mycursor.execute(sql5)
             myresult1 = mycursor.fetchall()
             paymentID = myresult1[0][0]
 
-            #UPDATE SERVICEFEE PAYMENTID AND SETTLEMENT DATE ROW.
+            # UPDATE SERVICEFEE PAYMENTID AND SETTLEMENT DATE ROW.
             sql6 = "UPDATE ServiceFee SET settlementDate = %s, settledByPaymentID = %s"
             val6 = [paymentDate, paymentID]
             mycursor.execute(sql6, val6)
-            mydb.commit()    
-
+            mydb.commit()
 
             messagebox.showinfo(title="Service Payment Submitted",
-                            message="Successful!")
+                                message="Successful!")
 
-    
-        #################UPDATE ITEM TABLE IF NEED###########################        
 
-    
+        #################UPDATE ITEM TABLE IF NEED###########################
 
 
 def cancelRequest(item):
     itemID = item[0]
 
-    # GET REQUEST ID        
+    # GET REQUEST ID
     sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemID]
     mycursor.execute(sql1, val1)
@@ -302,27 +300,29 @@ def cancelRequest(item):
     if myresult == []:
         messagebox.showinfo(title="Service Request Cancelled",
                             message="No request to cancel!")
-    
+
     else:
         requestID = myresult[0][0]
 
-        #update REQUESTstatus FROM REQUEST TABLE
+        # update REQUESTstatus FROM REQUEST TABLE
         sql3 = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
         val3 = ["Canceled", requestID]
-        mycursor.execute(sql3, val3) 
+        mycursor.execute(sql3, val3)
         mydb.commit()
 
-
-        #DELETE from services table because request is cancelled
+        # DELETE from services table because request is cancelled
         sql4 = "DELETE FROM Services WHERE itemID = %s"
         val4 = [itemID]
-        mycursor.execute(sql4,val4)
+        mycursor.execute(sql4, val4)
         mydb.commit()
 
+        print(requestID)
         sql5 = "DELETE FROM ServiceFee WHERE requestID = %s"
         val5 = [requestID]
         mycursor.execute(sql5, val5)
+        print(mycursor)
         mydb.commit()
+
 
 
         messagebox.showinfo(title="Service Request Cancelled",
@@ -362,9 +362,6 @@ def customerview(customerIDInput):
     addInfo.place(relx=0.7, rely=0.9)
 
     customer.mainloop()
-
-
-
 
 
 ########################### utility methods#################
