@@ -71,7 +71,7 @@ def simpleSearch(catModel):
     global simpleResults_screen
     simpleResults_screen = Tk()
     simpleResults_screen.title("Simple Search")
-    simpleResults_screen.geometry("500x600")
+    simpleResults_screen.geometry("650x620")
     simpleResults_screen.resizable(False, False)
     Label(simpleResults_screen, text="SEARCH RESULTS", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
 
@@ -85,11 +85,11 @@ def simpleSearch(catModel):
     if catModel in allModels:
         query["Model"] = catModel
 
-    totalStockCount = itemsCol.find(query, {"_id": 0}).count()
+    totalUnsoldCount = itemsCol.find(query, {"_id": 0}).count()
 
-    groupItems = itemsCol.aggregate([{"$match": query}, {"$group": {"_id": {"Color": "$Color", "PowerSupply": "$PowerSupply", "ProductionYear": "$ProductionYear", "Factory": "$Factory", "Product": "$Product", "Category": "$Category", "Model": "$Model"}, "Stock": {"$sum": 1}}}])
+    unsoldGroup = itemsCol.aggregate([{"$match": query}, {"$group": {"_id": {"Color": "$Color", "PowerSupply": "$PowerSupply", "ProductionYear": "$ProductionYear", "Factory": "$Factory", "Product": "$Product", "Category": "$Category", "Model": "$Model"}, "StockAvail": {"$sum": 1}}}])
 
-    Label(simpleResults_screen, text=totalStockCount).pack()
+    Label(simpleResults_screen, text="Total Unsold: " + str(totalUnsoldCount)).pack()
 
     scrollbar = Scrollbar(simpleResults_screen)
     scrollbar.pack( side = RIGHT, fill = Y )
@@ -97,8 +97,13 @@ def simpleSearch(catModel):
 
 
     groupItemData = []
-    for i in groupItems:
+    for i in unsoldGroup:
+        # ALL DETAILS
         x = i.get("_id")
+
+        x["PurchaseStatus"] = "Sold" 
+        soldGroup = itemsCol.find(x)
+        stockSold = soldGroup.count()
 
         prod = productsCol.find({"Category": str(x.get("Category")), "Model": str(x.get("Model"))})
         for p in prod:
@@ -108,8 +113,11 @@ def simpleSearch(catModel):
                 x["Price"] = p.get("Price ($)")
                 x["Cost"] = p.get("Cost ($)")
 
+        if userID[0].upper() == "A":
+            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price: " + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, Stock Avail: " + str(i.get("StockAvail")) + " Left" + ", Cost: " + str(x.get("Cost")) + ", Stock Sold: " + str(stockSold))
+        else:
+            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price: " + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, " + str(i.get("StockAvail")) + " Left")
 
-        mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", $" + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, " + str(i.get("Stock")) + " Left")
         groupItemData.append(x)
     
     mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
@@ -171,7 +179,7 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
     global advancedResults_screen
     advancedResults_screen = Tk()
     advancedResults_screen.title("Advanced Search")
-    advancedResults_screen.geometry("500x620")
+    advancedResults_screen.geometry("650x620")
     advancedResults_screen.resizable(False, False)
 
     Label(advancedResults_screen, text="SEARCH RESULTS", fg="Gold", bg="Maroon", width="300", height="4", font = "Helvetica 20 bold").pack()
@@ -201,8 +209,6 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
 
     unsoldGroup = itemsCol.aggregate([{"$match": query}, {"$group": {"_id": {"Color": "$Color", "PowerSupply": "$PowerSupply", "ProductionYear": "$ProductionYear", "Factory": "$Factory", "Product": "$Product", "Category": "$Category", "Model": "$Model"}, "StockAvail": {"$sum": 1}}}])
 
-    #soldGroup = itemsCol.aggregate([{"$match": {"PurchaseStatus": "Sold"}}, {"$group": {"_id": {"Color": "$Color", "PowerSupply": "$PowerSupply", "ProductionYear": "$ProductionYear", "Factory": "$Factory", "Product": "$Product", "Category": "$Category", "Model": "$Model"}, "StockLeft": {"$sum": 1}}}])
-
     Label(advancedResults_screen, text="Total Unsold: " + str(totalUnsoldCount)).pack()
 
     scrollbar = Scrollbar(advancedResults_screen)
@@ -213,12 +219,10 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
     for i in unsoldGroup:
         # ALL DETAILS
         x = i.get("_id")
-        print(i)
 
-        query["PurchaseStatus"] = "Sold" 
-        soldGroup = itemsCol.aggregate([{"$match": query}, {"$group": {"_id": {"Color": str(x.get("Color")), "PowerSupply": str(x.get("PowerSupply")), "ProductionYear": str(x.get("ProductionYear")), "Factory": str(x.get("Factory")), "Product": str(x.get("Product")), "Category": str(x.get("Category")), "Model": str(x.get("Model"))}, "StockLeft": {"$sum": 1}}}])
-        query["PurchaseStatus"] = "Unsold"
-        print(soldGroup)
+        x["PurchaseStatus"] = "Sold" 
+        soldGroup = itemsCol.find(x)
+        stockSold = soldGroup.count()
 
         prod = productsCol.find({"Category": str(x.get("Category")), "Model": str(x.get("Model"))})
         for p in prod:
@@ -229,9 +233,9 @@ def advancedSearch(catModel, color, factory, prodYear, powerSupply):
                 x["Cost"] = p.get("Cost ($)")
 
         if userID[0].upper() == "A":
-            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price:" + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, Stock Avail: " + str(i.get("StockAvail")) + " Left" + ", Cost: " + str(i.get("Cost")) + ", Stock Left: " + str(soldGroup.get("StockLeft")))
+            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price: " + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, Stock Avail: " + str(i.get("StockAvail")) + " Left" + ", Cost: " + str(x.get("Cost")) + ", Stock Sold: " + str(stockSold))
         else:
-            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price:" + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, " + str(i.get("StockAvail")) + " Left")
+            mylist.insert(END, str(x.get("Category")) + ", " + str(x.get("Model")) + ", " + str(x.get("Color")) + ", Price: " + str(x.get("Price")) + ", " + str(x.get("Warranty")) + " Months Warranty, " + str(i.get("StockAvail")) + " Left")
 
         groupItemData.append(x)
 
@@ -318,10 +322,10 @@ def checkout(groupItemData, selection):
 
     for item in cart:
         # TO UPDATE UNSOLD -> SOLD IN MONGODB
-        #print(item.get("ItemID"))
+        print(item.get("ItemID"))
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
-        # x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW. THIS LINE ACTUALLY UPDATES BUT IDW IT NOW @@@@@@@@@@@@@@@@@
+        x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW.
 
         purchase(item.get("ItemID"), item.get("Color"), item.get("Factory"), item.get("ProductionYear"), item.get("PowerSupply"), item.get("ProductID"), userID)    
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")
