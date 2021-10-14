@@ -313,19 +313,20 @@ def checkout(groupItemData, selection):
     for i in selection:
         groupType = groupItemData[i]
         cartItem = groupType
-        individualItems = itemsCol.find({"Category": groupType.get("Category"), "Model": groupType.get("Model"), "ProductionYear": groupType.get("ProductionYear"), "PowerSupply": groupType.get("PowerSupply"), "Color": groupType.get("Color")}, {"_id": 0}).limit(1)
+        individualItems = itemsCol.find({"Category": groupType.get("Category"), "Model": groupType.get("Model"), "ProductionYear": groupType.get("ProductionYear"), "Factory": groupType.get("Factory"), "PowerSupply": groupType.get("PowerSupply"), "PurchaseStatus": "Unsold", "Color": groupType.get("Color")}, {"_id": 0}).limit(1)
         for x in individualItems:
             cartItem["ItemID"] = x.get("ItemID")
-            print(cartItem)
         cart.append(cartItem)
 
 
     for item in cart:
         # TO UPDATE UNSOLD -> SOLD IN MONGODB
-        print(item.get("ItemID"))
         itemToUpdate = {"ItemID": item.get("ItemID")}
         newValue = {"$set": { "PurchaseStatus": "Sold" }}
         x = itemsCol.update_one(itemToUpdate, newValue) #IMPORTANT! COMMENTED OUT FOR NOW.
+        a = itemsCol.find({"ItemID": item.get("ItemID")})
+        #for i in a:
+        #    print (i)
 
         purchase(item.get("ItemID"), item.get("Color"), item.get("Factory"), item.get("ProductionYear"), item.get("PowerSupply"), item.get("ProductID"), userID)    
     messagebox.showinfo(title="Checkout Completed!", message="Complete!")

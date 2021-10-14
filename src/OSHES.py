@@ -304,7 +304,6 @@ main_account_screen()
 
 
 
-
 """ def registerAdministrator():
     global register_screen
     register_screen = Toplevel(main_screen)

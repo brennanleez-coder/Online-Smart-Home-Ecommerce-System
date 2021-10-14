@@ -4,7 +4,6 @@ import mysql.connector
 from typing import Type
 from pymongo.message import query
 from InitialiseMongoDB import initialiseMongoDB
-from pymongo import MongoClient
 from tkinter import messagebox
 from datetime import date
 from tkinter.constants import W
@@ -24,7 +23,7 @@ mycursor = mydb.cursor()
 def initialiseItemStatus():
 
     global init_screen
-    init_screen = Toplevel()
+    init_screen = Toplevel(admin)
     init_screen.title("Initialisation")
     init_screen.geometry("350x350")
     init_screen.resizable(False, False)
@@ -78,7 +77,7 @@ def initialiseItemStatus():
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
-def adminview(adminID):
+def adminview(runHome, adminID):
     global admin
     admin=Tk()
     admin.title("Admin View")
@@ -105,9 +104,8 @@ def adminview(adminID):
     unpaidCustButton = Button(admin,text="View Unpaid Customers",height="2",width="30",command=viewUnpaidCustScreen)
     unpaidCustButton.place(relx=0.2,rely=0.65)
 
-    initialisation = Button(admin,text="INITIALISATION",height="2",width="30",command=initialiseItemStatus)
+    initialisation = Button(admin,text="Initialisation",height="2",width="30",command=initialiseItemStatus)
     initialisation.place(relx=0.2,rely=0.75)
-
 
     addInfo = Label(text="© BT2102 GROUP 6.", font = "Helvetica 12 italic")
     addInfo.place(relx=0.7,rely=0.9)
@@ -117,9 +115,6 @@ def adminview(adminID):
 
 
 #adminview()
-
-
-
 
 
 
