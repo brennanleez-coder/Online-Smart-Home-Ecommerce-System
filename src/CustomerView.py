@@ -61,18 +61,37 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     viewSingle.geometry("370x280")
     viewSingle.resizable(False, False)
 
+
+    mydb.commit()
     # GET REQUEST ID
-    sql1 = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
+    sql1 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemSelected[0]]
     mycursor.execute(sql1, val1)
     myresult = mycursor.fetchall()
+
+    sql1 = "SELECT requestStatus FROM ServiceRequest WHERE requestID = %s"
+    val1 = [myresult[0][0]]
+    mycursor.execute(sql1, val1)
+    myresult = mycursor.fetchall()
+
+
+    print(myresult)
+
+    
     if myresult == []:
         status = "No request"
     else:
-        status = myresult[0][0]
+        index = len(myresult) - 1
+        status = myresult[index][0]
+        if status == 'Canceled':
+            status = "No request"
+        
+    print("status")
+    print(status)
 
     # CHECK IF STATUS IS SUBMITTED AND WAITING FOR PAYMENT, IF YES THEN CHECK IF 10 DAYS, IF YES UPDATE TO CANCEL.
     if status == "Submitted and Waiting for payment":
+        
         status = checkStatus(status, itemSelected[0])
 
     Label(viewSingle, text="ITEM " + itemSelected[0], fg='Gold',
@@ -81,14 +100,15 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     Label(viewSingle, text="Request Status: " + status, fg='Grey',
           width="300", height="2", font="Helvetica 16").pack()
 
-    Button(viewSingle, width=20, height=2, text="Request Service",
+    if status == "No request" or status == "Canceled" or status == "Completed":
+        Button(viewSingle, width=20, height=2, text="Request Service",
            command=lambda: [requestService(customerID, itemSelected), viewSingle.destroy()]).pack(pady=5)
 
     if status == "Submitted and Waiting for payment":
         Button(viewSingle, width=20, height=2, text="Pay for Service",
                command=lambda: [servicePayment(customerID, itemSelected), viewSingle.destroy()]).pack()
 
-    if status == "In Progress" or status == "Submitted":
+    if status == "In Progress" or status == "Submitted" or status == "Submitted and Waiting for payment":
         Button(viewSingle, width=20, height=2, text="Cancel Request",
                command=lambda: [cancelRequest(itemSelected), viewSingle.destroy()]).pack(pady=5)
 
@@ -96,11 +116,13 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
 
 
 def checkStatus(status, itemID):
-    mydb.commit()
-    sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
+    
+    sql1 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemID]
     mycursor.execute(sql1, val1)
     requestID = mycursor.fetchall()
+    print("checking requestID:")
+    print(requestID)
 
     sql2 = "SELECT creationDate from ServiceFee WHERE requestID = %s"
     val2 = [requestID[0][0]]
@@ -109,9 +131,13 @@ def checkStatus(status, itemID):
 
     today = date.today()
     d1 = today.strftime("%y/%m/%d")
+    print(creationDate)
+    print("today:")
+    print(today)
     endDate = creationDate[0][0] + timedelta(days=10)
 
     if endDate < today:
+        print('here')
         sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
         val4 = ["Canceled"]
         mycursor.execute(sql4, val4)
@@ -123,28 +149,12 @@ def checkStatus(status, itemID):
 
 def requestService(customerID, item):
     itemID = item[0]
-
-    """ sql11 = "SELECT requestStatus from ServiceRequest WHERE itemID = %s"
-    val11 = [itemID]
-    mycursor.execute(sql11, val11)
-    myresult3 = mycursor.fetchall()
-    requestStatus = myresult3[0][0] """
-
     model = item[1]
     category = item[2]
 
-    if model == "Light1":
-        warranty = 10
-    elif model == "Light2":
-        warranty = 6
-    elif model == "Safe1" or "Safe2" or "Safe3":
-        warranty = 10
-    else:
-        if model == "SmartHome1":
-            if category == "Lights":
-                warranty = 8
-            else:
-                warranty = 12
+    warranty = checkWarranty(model)
+
+
 
     sql1 = "SELECT purchaseDate from Buys WHERE itemID = %s"
     val1 = [itemID]
@@ -158,6 +168,7 @@ def requestService(customerID, item):
 
     if now <= warrantyEndDate:
         requestStatus = "Submitted"
+
     else:
         requestStatus = "Submitted and Waiting for payment"
 
@@ -168,33 +179,14 @@ def requestService(customerID, item):
     mycursor.execute(sql2, val2)
     mydb.commit()
 
-    """ if requestStatus == "Submitted and Waiting for payment": """
-
-    # UPDATE SERVICE STATUS AFTER SEVICE FEE IS PAID##################################################### KIV
-    # update for the admin
-
-    """  
-        sql3 = "UPDATE Item SET serviceStatus = %s"
-        val3 = ["Waiting for approval"]
-        mycursor.execute(sql2,val2)
-        mydb.commmit() """
+    sql3 = "INSERT INTO Services (serviceStatus, servicedByAdminID, itemID) VALUES (%s, %s, %s)"
+    val3 = ["Waiting for approval", "A1", itemID]
+    mycursor.execute(sql3, val3)
 
 
 # CREATION OF SERVICE FEE HERE.
-    if model == "Light1":
-        cost = 20
-    elif model == "Light2":
-        cost = 22
-    elif model == "Safe1":
-        cost = 30
-    elif model == "Safe2" or "Safe3":
-        cost = 50
-    else:
-        if model == "SmartHome1":
-            if category == "Lights":
-                cost = 30
-            else:
-                cost = 100
+    cost = checkCost(model)
+
 
     # GET REQUEST STATUS TO COMPUTE THE SERVICE FEES
     sql3 = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
@@ -208,12 +200,22 @@ def requestService(customerID, item):
     else:
         serviceFEE = 0
 
-    sql4 = "SELECT RequestDate, requestID FROM ServiceRequest WHERE itemID = %s"
+    sql4 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
     val4 = [itemID]
     mycursor.execute(sql4, val4)
-    myresult = mycursor.fetchall()
-    requestDate = myresult[0][0]
-    requestID = myresult[0][1]
+    myresult1 = mycursor.fetchall()
+    requestID = myresult1[0][0]
+    print("requestID")
+    print(requestID)
+
+
+    sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %s"
+    val4 = [requestID]
+    mycursor.execute(sql4, val4)
+    myresult2 = mycursor.fetchall()
+    requestDate = myresult2[0][0]
+    print("requestDate: ")
+    print(requestDate)
 
     sql5 = "INSERT INTO ServiceFee (requestID, serviceFeeAmount, creationDate) VALUES (%s, %s, %s)"
     val5 = [requestID, serviceFEE, requestDate]
@@ -225,6 +227,7 @@ def requestService(customerID, item):
 
 
 def servicePayment(customerID, item):
+    print("paying for service: ")
     itemID = item[0]
 
     sql3 = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
@@ -255,6 +258,7 @@ def servicePayment(customerID, item):
         print(serviceFEE)
 
         if serviceFEE == 0:
+
             messagebox.showinfo(title="Good news,",
                                 message="No payment required!")
         else:
@@ -289,20 +293,27 @@ def servicePayment(customerID, item):
 
 
 def cancelRequest(item):
+    print("Cancel Request:")
     itemID = item[0]
 
     # GET REQUEST ID
-    sql1 = "SELECT requestID FROM ServiceRequest WHERE itemID = %s"
+    sql1 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
     val1 = [itemID]
     mycursor.execute(sql1, val1)
     myresult = mycursor.fetchall()
 
+
     if myresult == []:
+        print("NOTHING")
+
         messagebox.showinfo(title="Service Request Cancelled",
                             message="No request to cancel!")
 
     else:
+
+
         requestID = myresult[0][0]
+        print(requestID)
 
         # update REQUESTstatus FROM REQUEST TABLE
         sql3 = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
@@ -316,17 +327,48 @@ def cancelRequest(item):
         mycursor.execute(sql4, val4)
         mydb.commit()
 
-        print(requestID)
+        
         sql5 = "DELETE FROM ServiceFee WHERE requestID = %s"
         val5 = [requestID]
         mycursor.execute(sql5, val5)
         print(mycursor)
         mydb.commit()
 
-
-
         messagebox.showinfo(title="Service Request Cancelled",
                             message="Successful!")
+
+
+def checkWarranty(model):
+    if model == "Light1":
+        warranty = 10
+    elif model == "Light2":
+        warranty = 6
+    elif model == "Safe1" or "Safe2" or "Safe3":
+        warranty = 10
+    else:
+        if model == "SmartHome1":
+            if category == "Lights":
+                warranty = 8
+            else:
+                warranty = 12
+    return warranty
+
+def checkCost(model):
+    if model == "Light1":
+        cost = 20
+    elif model == "Light2":
+        cost = 22
+    elif model == "Safe1":  
+        cost = 30
+    elif model == "Safe2" or "Safe3":
+        cost = 50
+    else:
+        if model == "SmartHome1":
+            if category == "Lights":
+                cost = 30
+            else:
+                cost = 100
+    return cost
 
 
 # ------------------------------------------ MAIN ---------------------------------------------------------------------------------------------
@@ -362,43 +404,3 @@ def customerview(customerIDInput):
     addInfo.place(relx=0.7, rely=0.9)
 
     customer.mainloop()
-
-
-########################### utility methods#################
-""" def calculateServiceFee(customerID, item):
-    itemID = item[0]
-    model = item[1]
-    category = item[2]
-
-    if model == "Light1":
-        cost = 20
-    elif model == "Light2":
-        cost = 22
-    elif model == "Safe1":
-        cost = 30
-    elif model == "Safe2" or "Safe3":
-        cost = 50
-    else:
-        if model == "SmartHome1":
-            if category == "Lights":
-                cost = 30
-            else:
-                cost = 100
-
-    sql = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
-    val = [itemID]
-    mycursor.execute(sql, val)
-    myresult = mycursor.fetchall()
-    requestStatus = myresult[0]
-
-    if requestStatus == "Submitted":
-        serviceFee = 0
-
-    if requestStatus == "":
-        serviceFee = 0
-
-    if requestStatus == "Submitted and Waiting for payment":
-        serviceFee = 40 + 0.2*cost
-
-    return serviceFee
- """

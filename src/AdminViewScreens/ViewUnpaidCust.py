@@ -30,6 +30,6 @@ def viewUnpaidCustScreen():
     scrollbar.pack( side = RIGHT, fill = Y )
 
     for i in myresult:
-        Label(unpaidCust_screen, text="Customer " + str(i[0]) + " Unpaid item: " + str(i[1]), font = "Helvetica 16").pack()
+        Label(unpaidCust_screen, text="Customer " + str(i[1]) + " Unpaid item: " + str(i[0]), font = "Helvetica 16").pack()
 
     scrollbar.config( command = mylist.yview )

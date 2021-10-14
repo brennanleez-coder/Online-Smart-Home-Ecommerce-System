@@ -32,8 +32,6 @@ def approves(requestID, administratorID):
     mydb.commit()
 
 
-
-
     sql = "SELECT requestID from ServiceRequest"
     mycursor.execute(sql)
     allItems = mycursor.fetchall()

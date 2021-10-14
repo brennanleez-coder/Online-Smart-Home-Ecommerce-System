@@ -2,7 +2,7 @@ from tkinter import *
 import os
 import mysql.connector
 from datetime import *
-from CustomerAndAdminFunctions.getSvcItems import getServiceItems
+#from CustomerAndAdminFunctions.getSvcItems import getServiceItems
 from tkinter import messagebox
 
 
@@ -19,7 +19,7 @@ def viewServiceItemsScreen():
     if len(output) != 0:  
         global svcItems_screen
         svcItems_screen = Tk()
-        svcItems_screen.geometry("400x500")
+        svcItems_screen.geometry("400x500") 
         svcItems_screen.resizable(False, False)
 
         svcItems_screen.title("Service Items")
@@ -92,3 +92,24 @@ def completeServicing(itemIndexes, itemInfo):
 
         messagebox.showinfo(title="Servicing Successful",
                         message="Items successfully serviced.")
+
+
+
+def getServiceItems():
+    
+    output = []
+    ### RETURNS ALL THOSE WHO SUBMITTED SERVICE REQUEST THAT IS NOT APPROVED OR CANCELLED
+    # myresult (requestID, itemID, customerId, requestStatus, requestDate)
+    sql = "SELECT requestID, requestStatus FROM ServiceRequest WHERE requestStatus = %s OR requestStatus = %s OR requestStatus = %s"
+    val = ["Submitted", "In Progress", "Approved"]
+    mycursor.execute(sql,val)
+    result = mycursor.fetchall()
+
+    if len(result) > 0:
+        for i in result:
+            output.append(i)
+
+    if len(output) == 0:
+            messagebox.showinfo(message="Nothing in Service!")
+
+    return output

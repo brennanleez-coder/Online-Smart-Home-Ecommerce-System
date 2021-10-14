@@ -22,33 +22,58 @@ mydb = mysql.connector.connect(user='root', password='password',
 mycursor = mydb.cursor()
 
 def initialiseItemStatus():
+
+    global init_screen
+    init_screen = Toplevel()
+    init_screen.title("Initialisation")
+    init_screen.geometry("350x350")
+    init_screen.resizable(False, False)
+
+    img = PhotoImage(file="img/cart.png")
+    label = Label(init_screen,image=img)
+    label.place(x=0, y=0)
     
-    mycursor.execute("CREATE TABLE itemStatus (pID VARCHAR(4) NOT NULL, soldItems INT , unsoldItems INT)")
-    mydb.commit()
-    
-    sql1 = "INSERT INTO itemStatus (pID, soldItems, unsoldItems) VALUES (%s, %s, %s)"
-    val1 = [("001", "90", "9"), ("002", "136", "163"), ("003", "29", "74"), ("004", "31","54"), ("005", "46", "99"), ("006", "50", "95"), ("007", "43", "82")]
-    mycursor.executemany(sql1, val1)
-    mydb.commit() 
+    sql = "SELECT * FROM information_schema.tables WHERE table_name = %s"
+    val = ["itemStatus"]
+    mycursor.execute(sql,val)
+    myresult1 = mycursor.fetchall()
+
+    if myresult1 == []:
+        mycursor.execute("CREATE TABLE itemStatus (pID VARCHAR(4) NOT NULL, soldItems INT , unsoldItems INT)")
+        mydb.commit()
+        
+        sql1 = "INSERT INTO itemStatus (pID, soldItems, unsoldItems) VALUES (%s, %s, %s)"
+        val1 = [("001", "90", "9"), ("002", "136", "163"), ("003", "29", "74"), ("004", "31","54"), ("005", "46", "99"), ("006", "50", "95"), ("007", "43", "82")]
+        mycursor.executemany(sql1, val1)
+        mydb.commit()
 
     sql2 = "SELECT * FROM itemStatus"
     mycursor.execute(sql2)
     myresult2 = mycursor.fetchall()
 
-    product1 = myresult2[0][0] + "Unsold Items:" + myresult2[0][1] + "Sold items: " + myresult2[0][0] 
+    Label(init_screen, text= "ProductID: " + str(myresult2[0][0]) + "  Sold items: " + str(myresult2[0][2]) + " Unsold Items: " + str(myresult2[0][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[1][0]) + " Sold items: " + str(myresult2[1][2]) + " Unsold Items: " + str(myresult2[1][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[2][0]) + "  Sold items: " + str(myresult2[2][2]) + " Unsold Items: " + str(myresult2[2][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[3][0]) + "  Sold items: " + str(myresult2[3][2]) + " Unsold Items: " + str(myresult2[3][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[4][0]) + "  Sold items: " + str(myresult2[4][2]) + " Unsold Items: " + str(myresult2[4][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[5][0]) + "  Sold items: " + str(myresult2[5][2]) + " Unsold Items: " + str(myresult2[5][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[6][0]) + "  Sold items: " + str(myresult2[6][2]) + " Unsold Items: " + str(myresult2[6][1])).pack()
+  
+    
+    Button(init_screen, width=10, height=1, text="Close", command= init_screen.destroy).pack()
 
-    messagebox.showinfo(message="Initialised!")
+
     """
-    sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    val1 = [("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123"), ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123"), ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123")]
-    mycursor.executemany(sql1,val1)x
-    mydb.commit()
+        sql1 = "INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        val1 = [("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123"), ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123"), ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123")]
+        mycursor.executemany(sql1,val1)x
+        mydb.commit()
 
 
-    sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%s, %s %s, %s, %s, %s)"
-    val2 = ("1", "10", "50", "20", "Light1", "Lights")
-    mycursor.execute(sql2,val2)
-    mydb.commit()
+        sql2 = "INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (%s, %s %s, %s, %s, %s)"
+        val2 = ("1", "10", "50", "20", "Light1", "Lights")
+        mycursor.execute(sql2,val2)
+        mydb.commit()
 """
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
