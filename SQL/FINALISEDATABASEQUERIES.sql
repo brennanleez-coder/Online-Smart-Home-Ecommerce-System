@@ -93,9 +93,9 @@ CREATE TABLE ServiceFee (
 
 
 CREATE TABLE Cancels (
+    cancelledByCustID VARCHAR(100),
 	requestID INT,
     cancellationDate DATE,
-    cancelledByCustID VARCHAR(100),
     PRIMARY KEY (cancelledByCustID),
     FOREIGN KEY (cancelledByCustID) REFERENCES Customer(customerID),
     FOREIGN KEY (requestID) REFERENCES ServiceRequest(requestID)
