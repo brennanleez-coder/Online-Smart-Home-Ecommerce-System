@@ -50,13 +50,13 @@ def initialiseItemStatus():
     mycursor.execute(sql2)
     myresult2 = mycursor.fetchall()
 
-    Label(init_screen, text= "ProductID: " + str(myresult2[0][0]) + "  Sold items: " + str(myresult2[0][2]) + " Unsold Items: " + str(myresult2[0][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[1][0]) + " Sold items: " + str(myresult2[1][2]) + " Unsold Items: " + str(myresult2[1][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[2][0]) + "  Sold items: " + str(myresult2[2][2]) + " Unsold Items: " + str(myresult2[2][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[3][0]) + "  Sold items: " + str(myresult2[3][2]) + " Unsold Items: " + str(myresult2[3][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[4][0]) + "  Sold items: " + str(myresult2[4][2]) + " Unsold Items: " + str(myresult2[4][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[5][0]) + "  Sold items: " + str(myresult2[5][2]) + " Unsold Items: " + str(myresult2[5][1])).pack()
-    Label(init_screen, text= "ProductID: " + str(myresult2[6][0]) + "  Sold items: " + str(myresult2[6][2]) + " Unsold Items: " + str(myresult2[6][1])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[0][0]) + " Sold items: " + str(myresult2[0][1]) + " Unsold Items: " + str(myresult2[0][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[1][0]) + " Sold items: " + str(myresult2[1][1]) + " Unsold Items: " + str(myresult2[1][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[2][0]) + " Sold items: " + str(myresult2[2][1]) + " Unsold Items: " + str(myresult2[2][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[3][0]) + " Sold items: " + str(myresult2[3][1]) + " Unsold Items: " + str(myresult2[3][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[4][0]) + " Sold items: " + str(myresult2[4][1]) + " Unsold Items: " + str(myresult2[4][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[5][0]) + " Sold items: " + str(myresult2[5][1]) + " Unsold Items: " + str(myresult2[5][2])).pack()
+    Label(init_screen, text= "ProductID: " + str(myresult2[6][0]) + " Sold items: " + str(myresult2[6][1]) + " Unsold Items: " + str(myresult2[6][2])).pack()
   
     
     Button(init_screen, width=10, height=1, text="Close", command= init_screen.destroy).pack()

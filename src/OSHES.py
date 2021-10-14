@@ -240,7 +240,7 @@ def login_sucess(username):
     main_screen.resizable(False, False)
 
     Label(login_success_screen, text="Login Successfully!").pack(pady=10, padx=5)
-    if username[0] == "C":
+    if username[0].upper() == "C":
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), customerview(username)]).pack()
     else:
         Button(login_success_screen, text="OK", command=lambda:[delete_login_success(), adminview(username)]).pack()

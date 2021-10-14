@@ -13,18 +13,17 @@ SELECT * from Approves;
 SELECT * from Cancels;
 
 
-//INSERT ADMIN ACCOUNT FOR PRESENTATION
-INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES ("admin", "ryan","tan","male","12341234","admin");
+//INSERT FOR PRESENTATION
 
-// administrator function
-SELECT itemID
 
-//fake accounts
-
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (1, 10, 50, 20, "Light1", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (2, 8, 60, 22, "Light2", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (3, 8, 70, 30, "Light3", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (4, 10, 100, 30, "SmartHome1", "Lights");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (5, 10, 120, 50, "Safe1", "Locks");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (6, 10, 125, 50, "Safe2", "Locks");
+INSERT INTO Product (productID, warranty, price, cost, model, category) VALUES (7, 12, 200, 100, "SmartHome1", "Locks");
 INSERT INTO Administrator (administratorID, fName, lName, gender, phoneNumber, password) VALUES ("A1", "ADMIN","ADMIN","123","123","123");
-INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C1", "brennan","lee","male","123@gmail.com","TH","12341234","123");
-INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C2", "ryan","tan","male","123@gmail.com","SH","12341234","123");
-INSERT INTO Customer (customerID, fName, lName, gender, emailAddress, address, phoneNumber, password) VALUES ("C3", "xinyen","tan","female","123@gmail.com","SH","12341234","123");
 
 // PRODUCT INITIALISATION
 

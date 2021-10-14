@@ -32,7 +32,7 @@ def viewServiceItemsScreen():
 
         # output is a list of tuples
         for items in output:
-            mylist.insert(END, "RequestID: " + str(items[0]) + ", " + items[1])
+            mylist.insert(END, "RequestID: " + str(items[0]) + ", itemID: " + items[2] + ", status: "+ items[1])
         
         mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
         scrollbar.config( command = mylist.yview )
@@ -100,7 +100,7 @@ def getServiceItems():
     output = []
     ### RETURNS ALL THOSE WHO SUBMITTED SERVICE REQUEST THAT IS NOT APPROVED OR CANCELLED
     # myresult (requestID, itemID, customerId, requestStatus, requestDate)
-    sql = "SELECT requestID, requestStatus FROM ServiceRequest WHERE requestStatus = %s OR requestStatus = %s OR requestStatus = %s"
+    sql = "SELECT requestID, requestStatus, itemID FROM ServiceRequest WHERE requestStatus = %s OR requestStatus = %s OR requestStatus = %s"
     val = ["Submitted", "In Progress", "Approved"]
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
