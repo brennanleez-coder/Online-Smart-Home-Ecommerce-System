@@ -75,8 +75,6 @@ def viewSingleItem(customerID, itemList, itemCursorSelection):
     myresult = mycursor.fetchall()
 
 
-    print(myresult)
-
     
     if myresult == []:
         status = "No request"
@@ -124,20 +122,18 @@ def checkStatus(status, itemID):
     print("checking requestID:")
     print(requestID)
 
-    sql2 = "SELECT creationDate from ServiceFee WHERE requestID = %s"
+    sql2 = "SELECT requestDate from ServiceRequest WHERE requestID = %s"
     val2 = [requestID[0][0]]
     mycursor.execute(sql2, val2)
     creationDate = mycursor.fetchall()
 
     today = date.today()
     d1 = today.strftime("%y/%m/%d")
-    print(creationDate)
-    print("today:")
-    print(today)
+
     endDate = creationDate[0][0] + timedelta(days=10)
 
     if endDate < today:
-        print('here')
+        print("if end date less than today")
         sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
         val4 = ["Canceled"]
         mycursor.execute(sql4, val4)
@@ -153,8 +149,6 @@ def requestService(customerID, item):
     category = item[2]
 
     warranty = checkWarranty(model)
-
-
 
     sql1 = "SELECT purchaseDate from Buys WHERE itemID = %s"
     val1 = [itemID]
@@ -178,10 +172,12 @@ def requestService(customerID, item):
     val2 = [itemID, customerID, requestStatus, now]
     mycursor.execute(sql2, val2)
     mydb.commit()
+    print(mycursor)
 
     sql3 = "INSERT INTO Services (serviceStatus, servicedByAdminID, itemID) VALUES (%s, %s, %s)"
     val3 = ["Waiting for approval", "A1", itemID]
     mycursor.execute(sql3, val3)
+    print(mycursor)
 
 
 # CREATION OF SERVICE FEE HERE.
@@ -197,30 +193,35 @@ def requestService(customerID, item):
 
     if requestStatus == "Submitted and Waiting for payment":
         serviceFEE = int(40 + 0.2*cost)
+
+        sql4 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
+        val4 = [itemID]
+        mycursor.execute(sql4, val4)
+        myresult1 = mycursor.fetchall()
+        requestID = myresult1[0][0]
+        print("requestID")
+        print(requestID)
+
+
+        sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %s"
+        val4 = [requestID]
+        mycursor.execute(sql4, val4)
+        myresult2 = mycursor.fetchall()
+        requestDate = myresult2[0][0]
+        print("requestDate: ")
+        print(requestDate)
+
+        sql5 = "INSERT INTO ServiceFee (requestID, serviceFeeAmount, creationDate) VALUES (%s, %s, %s)"
+        val5 = [requestID, serviceFEE, requestDate]
+        mycursor.execute(sql5, val5)
+        mydb.commit()
+
+        print("INSERT SERVICE FEE")
+        print("requestID:" + str(requestID) + ", serviceFEE: " + str(serviceFEE))
+
     else:
         serviceFEE = 0
 
-    sql4 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
-    val4 = [itemID]
-    mycursor.execute(sql4, val4)
-    myresult1 = mycursor.fetchall()
-    requestID = myresult1[0][0]
-    print("requestID")
-    print(requestID)
-
-
-    sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %s"
-    val4 = [requestID]
-    mycursor.execute(sql4, val4)
-    myresult2 = mycursor.fetchall()
-    requestDate = myresult2[0][0]
-    print("requestDate: ")
-    print(requestDate)
-
-    sql5 = "INSERT INTO ServiceFee (requestID, serviceFeeAmount, creationDate) VALUES (%s, %s, %s)"
-    val5 = [requestID, serviceFEE, requestDate]
-    mycursor.execute(sql5, val5)
-    mydb.commit()
 
     messagebox.showinfo(title="Service Request Submitted",
                         message="Successful!")
@@ -229,6 +230,8 @@ def requestService(customerID, item):
 def servicePayment(customerID, item):
     print("paying for service: ")
     itemID = item[0]
+    model = item[1]
+    cost = checkCost(model)
 
     sql3 = "SELECT requestStatus FROM ServiceRequest WHERE itemID = %s"
     val3 = [itemID]
@@ -254,8 +257,37 @@ def servicePayment(customerID, item):
         val2 = [requestID]
         mycursor.execute(sql2, val2)
         myresult = mycursor.fetchall()
-        serviceFEE = myresult[0][0]
-        print(serviceFEE)
+        if myresult == []:
+            serviceFEE = int(40 + 0.2*cost)
+
+            sql4 = "SELECT max(requestID) FROM ServiceRequest WHERE itemID = %s"
+            val4 = [itemID]
+            mycursor.execute(sql4, val4)
+            myresult1 = mycursor.fetchall()
+            requestID = myresult1[0][0]
+            print("requestID")
+            print(requestID)
+
+
+            sql4 = "SELECT RequestDate FROM ServiceRequest WHERE requestID = %s"
+            val4 = [requestID]
+            mycursor.execute(sql4, val4)
+            myresult2 = mycursor.fetchall()
+            requestDate = myresult2[0][0]
+            print("requestDate: ")
+            print(requestDate)
+
+            sql5 = "INSERT INTO ServiceFee (requestID, serviceFeeAmount, creationDate) VALUES (%s, %s, %s)"
+            val5 = [requestID, serviceFEE, requestDate]
+            mycursor.execute(sql5, val5)
+            mydb.commit()
+
+            print("INSERT SERVICE FEE")
+            print("requestID:" + str(requestID) + ", serviceFEE: " + str(serviceFEE))
+        
+        else: 
+            serviceFEE = myresult[0][0]
+            print(serviceFEE)
 
         if serviceFEE == 0:
 
@@ -313,9 +345,8 @@ def cancelRequest(item):
                             message="No request to cancel!")
 
     else:
-
-
         requestID = myresult[0][0]
+        print("REQUESTID")
         print(requestID)
 
         # update REQUESTstatus FROM REQUEST TABLE
@@ -337,8 +368,10 @@ def cancelRequest(item):
         print(mycursor)
         mydb.commit()
 
-        sql6 = "INSERT INTO Cancels WHERE requestID = %s"
-        val6 = [requestID]
+        today = date.today()
+        d1 = today.strftime("%y/%m/%d")
+        sql6 = "INSERT INTO Cancels (cancelledByCustID, requestID, cancellationDate) VALUES (%s, %s, %s)"
+        val6 = [customerID, requestID, d1]
         mycursor.execute(sql6, val6)
         mydb.commit()
 

@@ -27,6 +27,7 @@ def searchScreen(thisUserID):
     search_screen = Tk()
     search_screen.geometry("300x280")
     search_screen.resizable(False, False)
+
     Label(search_screen,text="SEARCH",fg='Gold', bg='Maroon', width="300", height="3", font = "Helvetica 20 bold").pack(anchor=NE)
     
     global userID
