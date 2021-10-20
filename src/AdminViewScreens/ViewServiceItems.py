@@ -80,18 +80,26 @@ def completeServicing(itemIndexes, itemInfo):
         requestID = itemInfo[i][0]
         itemID = itemInfo[i][1]
 
-        sql = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
-        val = ["Completed", requestID]
+        sql = "SELECT requestStatus FROM ServiceRequest WHERE requestID = %s"
+        val = [requestID]
         mycursor.execute(sql,val)
-        mydb.commit()
+        result = mycursor.fetchall()
 
-        sql1 = "UPDATE Services SET serviceStatus = %s"
-        val1 = ["Completed"]
-        mycursor.execute(sql1,val1)
-        mydb.commit()
+        if result[0][0] != "Approved":
+            messagebox.showinfo(message="Item not approved!")
+        else:
+            sql = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
+            val = ["Completed", requestID]
+            mycursor.execute(sql,val)
+            mydb.commit()
 
-        messagebox.showinfo(title="Servicing Successful",
-                        message="Items successfully serviced.")
+            sql1 = "UPDATE Services SET serviceStatus = %s"
+            val1 = ["Completed"]
+            mycursor.execute(sql1,val1)
+            mydb.commit()
+
+            messagebox.showinfo(title="Servicing Successful",
+                            message="Items successfully serviced.")
 
 
 

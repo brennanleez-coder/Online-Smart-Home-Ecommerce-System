@@ -269,8 +269,11 @@ def servicePayment(customerID, item):
             mycursor.execute(sql3, val3)
             mydb.commit()
 
-            sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
-            val4 = ["In Progress"]
+            print("INSERT INTO PAYMENT")
+            print("paid by cust: " + str(customerID) + ", paymentAMOUNT: " + str(serviceFEE))
+
+            sql4 = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
+            val4 = ["In Progress", requestID]
             mycursor.execute(sql4, val4)
             mydb.commit()
 
@@ -280,8 +283,8 @@ def servicePayment(customerID, item):
             paymentID = myresult1[0][0]
 
             # UPDATE SERVICEFEE PAYMENTID AND SETTLEMENT DATE ROW.
-            sql6 = "UPDATE ServiceFee SET settlementDate = %s, settledByPaymentID = %s"
-            val6 = [paymentDate, paymentID]
+            sql6 = "UPDATE ServiceFee SET settlementDate = %s, settledByPaymentID = %s WHERE requestID = %s"
+            val6 = [paymentDate, paymentID, requestID]
             mycursor.execute(sql6, val6)
             mydb.commit()
 
