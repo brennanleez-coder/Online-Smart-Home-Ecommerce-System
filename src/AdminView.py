@@ -77,13 +77,12 @@ def initialiseItemStatus():
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
-def adminview(runHome, adminID):
+def adminview(adminID):
     global admin
     admin=Tk()
     admin.title("Admin View")
     admin.geometry("500x600")
     admin.resizable(False, False)
-
 
     img = PhotoImage(file="img/2.png")
     label = Label(admin,image=img)
