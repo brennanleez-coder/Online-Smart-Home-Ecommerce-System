@@ -134,8 +134,8 @@ def checkStatus(status, itemID):
 
     if endDate < today:
         print("if end date less than today")
-        sql4 = "UPDATE ServiceRequest SET requestStatus = %s"
-        val4 = ["Canceled"]
+        sql4 = "UPDATE ServiceRequest SET requestStatus = %s WHERE requestID = %s"
+        val4 = ["Canceled", requestID[0][0]]
         mycursor.execute(sql4, val4)
         mydb.commit()
         return "Canceled"

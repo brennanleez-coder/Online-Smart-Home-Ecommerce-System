@@ -47,6 +47,7 @@ def viewServiceItemsScreen():
 
 def approves(itemIndexes, itemInfo):
     print(itemIndexes)
+    itemID = itemInfo[0][2]
     print(itemInfo)
     for i in itemIndexes:
         requestID = itemInfo[i][0]
@@ -58,8 +59,8 @@ def approves(itemIndexes, itemInfo):
         mycursor.execute(sql,val)
         mydb.commit()
 
-        sql1 = "UPDATE Services SET serviceStatus = %s"
-        val1 = ["In progress"]
+        sql1 = "UPDATE Services SET serviceStatus = %s WHERE itemID = %s"
+        val1 = ["In progress", itemID]
         mycursor.execute(sql1,val1)
         mydb.commit()
 
@@ -77,8 +78,10 @@ def approves(itemIndexes, itemInfo):
 def completeServicing(itemIndexes, itemInfo):
 
     for i in itemIndexes:
+        print("itemInfo")
+        print(itemInfo)
         requestID = itemInfo[i][0]
-        itemID = itemInfo[i][1]
+        itemID = itemInfo[i][2  ]
 
         sql = "SELECT requestStatus FROM ServiceRequest WHERE requestID = %s"
         val = [requestID]
@@ -92,9 +95,10 @@ def completeServicing(itemIndexes, itemInfo):
             val = ["Completed", requestID]
             mycursor.execute(sql,val)
             mydb.commit()
-
-            sql1 = "UPDATE Services SET serviceStatus = %s"
-            val1 = ["Completed"]
+            print("itemID")
+            print(itemID)
+            sql1 = "UPDATE Services SET serviceStatus = %s WHERE itemID = %s"
+            val1 = ["Completed", itemID]
             mycursor.execute(sql1,val1)
             mydb.commit()
 
