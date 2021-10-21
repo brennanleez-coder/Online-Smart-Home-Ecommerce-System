@@ -232,7 +232,7 @@ def adminlogin_verify():
 
 # Designing popup for login success
  
-def login_sucess(username):
+def login_sucess(username): 
     global login_success_screen
     login_success_screen = Toplevel(login_screen)
     login_success_screen.title("Success")

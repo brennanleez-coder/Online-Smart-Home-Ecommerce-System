@@ -32,7 +32,7 @@ def viewServiceItemsScreen():
 
         # output is a list of tuples
         for items in output:
-            mylist.insert(END, "RequestID: " + str(items[0]) + ", itemID: " + items[2] + ", status: "+ items[1])
+            mylist.insert(END, "RequestID: " + str(items[0]) + ", itemID: " + items[2] + ", request status: "+ items[1])
         
         mylist.pack(fill = BOTH , expand= YES, padx=10, pady=10)
         scrollbar.config( command = mylist.yview )
