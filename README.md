@@ -1,4 +1,5 @@
 # BT2102Project
+With the rise in popularity of ecommerce, an increasing number of people are acquiring smart-home technology online. A firm that sells smart home technology has opted to implement a new Online Smart Home Ecommerce System. Our team has then produced a "OSHES" database software program to manage product sales, administration, and maintenance with the use of MySQL and MongoDB.
 
 STEPS:
   1. Connect your SQL and MongoDB.
