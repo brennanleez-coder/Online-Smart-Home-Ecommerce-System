@@ -77,7 +77,7 @@ def initialiseItemStatus():
 
 # ------------------------------------------ MAIN --------------------------------------------------------------------------------------------- 
     
-def adminview(runHome, adminID):
+def adminview(adminID):
     global admin
     admin=Tk()
     admin.title("Admin View")

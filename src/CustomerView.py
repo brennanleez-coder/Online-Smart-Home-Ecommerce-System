@@ -345,8 +345,6 @@ def cancelRequest(item):
                             message="No request to cancel!")
 
     else:
-
-
         requestID = myresult[0][0]
         print("REQUESTID")
         print(requestID)
@@ -370,8 +368,10 @@ def cancelRequest(item):
         print(mycursor)
         mydb.commit()
 
-        sql6 = "INSERT INTO Cancels WHERE requestID = %s"
-        val6 = [requestID]
+        today = date.today()
+        d1 = today.strftime("%y/%m/%d")
+        sql6 = "INSERT INTO Cancels (cancelledByCustID, requestID, cancellationDate) VALUES (%s, %s, %s)"
+        val6 = [customerID, requestID, d1]
         mycursor.execute(sql6, val6)
         mydb.commit()
 
